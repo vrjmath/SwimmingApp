@@ -24,7 +24,7 @@
             android:layout_gravity="center_horizontal"
             android:ellipsize="end"
             android:scrollbars="none"
-            android:text="00:00:00:000"
+            android:text="00:00:000"
             android:textAlignment="center"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="48dp"/>

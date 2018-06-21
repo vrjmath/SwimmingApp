@@ -32,7 +32,7 @@
         <activity android:name=".ChronometerActivity" />
         <activity android:name=".SaveActivity" />
         <activity android:name=".DrawerActivity" />
-        <activity android:name=".SpecificMeetActivity"></activity>
+        <activity android:name=".SpecificMeetActivity" />
     </application>
 
 </manifest>

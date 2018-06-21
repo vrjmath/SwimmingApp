@@ -44,8 +44,8 @@ public class SpecificMeetActivity extends AppCompatActivity {
     }
 
     private void generateListContent() {
-        for (int i = 0; i < 1; i++) {
-            data.add("Math, Bob 11-12 200 Freestlye");
+        for (int i = 0; i < 55; i++) {
+            data.add("Math, Bob 11-12 200 Freestyle");
         }
     }
 

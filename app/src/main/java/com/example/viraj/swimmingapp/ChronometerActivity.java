@@ -109,7 +109,7 @@ public class ChronometerActivity extends Activity {
 
                 //we just simply copy the current text of tv_timer and append it to et_laps
                 mEtLaps.append("LAP " + String.valueOf(mLapCounter++)
-                        + "   " + mChrono.getSplit() + "\n");
+                        + "   " + mChrono.getSplit() + "   " + mChrono.getSplitTime() + "\n");
 
                 //scroll to the bottom of et_laps
                 mSvLaps.post(new Runnable() {

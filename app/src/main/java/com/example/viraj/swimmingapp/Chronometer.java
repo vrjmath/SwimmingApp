@@ -14,7 +14,8 @@ public class Chronometer implements Runnable {
 
     //Some constants for milliseconds to hours, minutes, and seconds conversion
     public static final long MILLIS_TO_MINUTES = 60000;
-    public static final long MILLS_TO_HOURS = 3600000;
+
+    //public static final long MILLS_TO_HOURS = 3600000;
     ArrayList<String> splitsArr = new ArrayList<String>();
 
 
@@ -89,17 +90,27 @@ public class Chronometer implements Runnable {
     public String getSplit() {
         long temp = current;
         current = System.currentTimeMillis();
-        long split =  System.currentTimeMillis() - temp;
-
+        long split =  current - temp;
         int seconds = (int) (split / 1000) % 60;
         int minutes = (int) ((split / (MILLIS_TO_MINUTES)) % 60);
         //int hours = (int) ((since / (MILLS_TO_HOURS)) % 24); //this resets to  0 after 24 hour!
-        int hours = (int) ((split / (MILLS_TO_HOURS))); //this does not reset to 0!
-        int millis = (int) split % 1000; //the last 3 digits of millisecs
-        String ans = String.format("%02d:%02d:%02d:%03d", hours, minutes, seconds, millis);
+        //int hours = (int) ((split / (MILLS_TO_HOURS))); //this does not reset to 0!
+        int millis = (int) split % 100; //the last 3 digits of millisecs
+        String ans = String.format("%02d:%02d:%03d", minutes, seconds, millis);
         splitsArr.add(ans);
         return ans ;
     }
+
+    public String getSplitTime() {
+        long time = current - mStartTime;
+        int seconds = (int) (time / 1000) % 60;
+        int minutes = (int) ((time / (MILLIS_TO_MINUTES)) % 60);
+        //int hours = (int) ((since / (MILLS_TO_HOURS)) % 24); //this resets to  0 after 24 hour!
+        //int hours = (int) ((time / (MILLS_TO_HOURS))); //this does not reset to 0!
+        int millis = (int) time % 1000; //the last 3 digits of millisecs
+        return String.format("%02d:%02d:%03d", minutes, seconds, millis);
+    }
+
     public ArrayList<String> getList() {
         return splitsArr;
     }
@@ -117,11 +128,11 @@ public class Chronometer implements Runnable {
             int seconds = (int) (since / 1000) % 60;
             int minutes = (int) ((since / (MILLIS_TO_MINUTES)) % 60);
             //int hours = (int) ((since / (MILLS_TO_HOURS)) % 24); //this resets to  0 after 24 hour!
-            int hours = (int) ((since / (MILLS_TO_HOURS))); //this does not reset to 0!
+            //int hours = (int) ((since / (MILLS_TO_HOURS))); //this does not reset to 0!
             int millis = (int) since % 1000; //the last 3 digits of millisecs
 
-            ((ChronometerActivity) mContext).updateTimerText(String.format("%02d:%02d:%02d:%03d"
-                    , hours, minutes, seconds, millis));
+            ((ChronometerActivity) mContext).updateTimerText(String.format("%02d:%02d:%03d"
+                    , minutes, seconds, millis));
 
             //Sleep the thread for a short amount, to prevent high CPU usage!
             try {
