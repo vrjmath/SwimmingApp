@@ -21,5 +21,4 @@
         android:layout_toEndOf="@+id/list_item_thumbnail"
         android:layout_toRightOf="@+id/list_item_thumbnail"/>
 
-
 </RelativeLayout>

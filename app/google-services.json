@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "800945623334",
+    "firebase_url": "https://swim-app-8518a.firebaseio.com",
+    "project_id": "swim-app-8518a",
+    "storage_bucket": "swim-app-8518a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800945623334:android:77a0bedba68c4e65",
+        "android_client_info": {
+          "package_name": "com.example.viraj.swimmingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800945623334-pfql8qm36jomv2335e9u03djcg1n0aj8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.viraj.swimmingapp",
+            "certificate_hash": "07ced4b87436502aeec18aaac575d00ce5a47991"
+          }
+        },
+        {
+          "client_id": "800945623334-2pc9jvbnb61m1rj30hodrk709rhu7vo2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2Y6fIbRNY4M_Zh_gFN9jp38w_ihd5Qi8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800945623334-2pc9jvbnb61m1rj30hodrk709rhu7vo2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
