@@ -23,6 +23,7 @@ public class Chronometer implements Runnable {
      * Context which is responsible for this instance of the class
      */
     Context mContext;
+    Object mObject;
     /**
      * Starting time
      */
@@ -35,20 +36,20 @@ public class Chronometer implements Runnable {
 
     /**
      * Constructor for the class for normal usage
-     * @param context the Activity which is responsible fot this insatnce of class
+     * @param object the Activity which is responsible fot this insatnce of class
      */
-    public Chronometer(Context context) {
-        mContext = context;
+    public Chronometer(Object object) {
+        mObject = object;
     }
 
     /**
      * Constructor which takes context and also an already set starting time
      * this is used mainly for onResume if the application was stopped for any reason
-     * @param context
+     * @param object
      * @param startTime
      */
-    public Chronometer(Context context, long startTime) {
-        this(context);
+    public Chronometer(Object object, long startTime) {
+        this(object);
         mStartTime = startTime;
         current = mStartTime;
     }
@@ -131,8 +132,9 @@ public class Chronometer implements Runnable {
             //int hours = (int) ((since / (MILLS_TO_HOURS))); //this does not reset to 0!
             int millis = (int) since % 1000; //the last 3 digits of millisecs
 
-            ((ChronometerActivity) mContext).updateTimerText(String.format("%02d:%02d:%03d"
-                    , minutes, seconds, millis));
+            /*((ChronometerFragment) mObject).updateTimerText(String.format("%02d:%02d:%03d"
+                    , minutes, seconds, millis));*/
+
 
             //Sleep the thread for a short amount, to prevent high CPU usage!
             try {
@@ -142,4 +144,5 @@ public class Chronometer implements Runnable {
             }
         }
     }
+
 }

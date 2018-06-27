@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -83,10 +85,14 @@ public class SpecificMeetFragment extends android.app.Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 HashMap<String, Object> dataMap = new HashMap<String, Object>();
-                for(DataSnapshot event: dataSnapshot.getChildren()){
+                for (DataSnapshot event : dataSnapshot.getChildren()) {
                     data.add(event.getKey());
                 }
                 //System.out.println(data.get(0));
+                System.out.println("here:" + data.get(0));
+
+                Collections.sort(data);
+
                 adapter.notifyDataSetChanged();
             }
 
