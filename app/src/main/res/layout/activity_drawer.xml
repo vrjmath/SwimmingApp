@@ -12,7 +12,6 @@
         android:id="@+id/activity_home_drawer"
         android:layout_width="match_parent"
         android:layout_height="fill_parent" >
-
     </YourDrawer>
 
 </RelativeLayout>

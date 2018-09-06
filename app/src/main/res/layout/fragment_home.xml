@@ -18,9 +18,11 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:backgroundTint="@android:color/holo_blue_light"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+    android:layout_margin="@dimen/fab_margin"
+      app:srcCompat="@drawable/ic_person_add"
+       />
 
 </RelativeLayout>

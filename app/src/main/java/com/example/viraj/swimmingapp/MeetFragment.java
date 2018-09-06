@@ -18,13 +18,21 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MeetFragment extends android.app.Fragment {
+public class MeetFragment extends Fragment {
     private ArrayList<String> data = new ArrayList<String>();
     ArrayAdapter<String> adapter;
+
+    DatabaseReference dF;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +47,7 @@ public class MeetFragment extends android.app.Fragment {
 
         adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text, data);
         lv.setAdapter(adapter);
-        generateListContent();
+        //generateListContent();
         //lv.setAdapter(new MeetFragment().getActivity().MyListAdaper(this, R.layout.list_item, data));
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -47,10 +55,38 @@ public class MeetFragment extends android.app.Fragment {
                 //Toast.makeText(MeetActivity.this, "List item was clicked at " + position, Toast.LENGTH_SHORT).show();
                // Intent intent = new Intent(getActivity(), SpecificMeetActivity.class);
                // getActivity().startActivity(intent);
+
+
+                SpecificMeetFragment smf = new SpecificMeetFragment();
+                data.get(position);
+                Bundle bundle = new Bundle();
+                System.out.println("Position is" + data.get(position));
+                bundle.putString("Reference", data.get(position));
+                System.out.println("INSIDE MEET" + bundle.getString("Reference"));
+                //bundle.putInt("type", 1);
+                smf.setArguments(bundle);
                 getFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.screen_area, new SpecificMeetFragment())
+                        .replace(R.id.screen_area, smf)
                         .commit();
+
+            }
+        });
+
+        dF = FirebaseDatabase.getInstance().getReference("Meets");
+        dF.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //HashMap<String, Object> dataMap = new HashMap<String, Object>();
+                for(DataSnapshot meet: dataSnapshot.getChildren()){
+                    data.add(meet.getKey());
+                }
+                //Collections.sort(data);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
@@ -127,6 +163,10 @@ public class MeetFragment extends android.app.Fragment {
 
 
 
+    }
 
 
-}
+
+
+
+

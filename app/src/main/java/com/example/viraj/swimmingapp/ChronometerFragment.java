@@ -15,15 +15,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toolbar;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 
-public class ChronometerFragment extends android.app.Fragment implements Runnable {
+public class ChronometerFragment extends Fragment implements Runnable {
 
 
     Handler handler = new Handler();
     public static final long MILLIS_TO_MINUTES = 60000;
+
+    Bundle bundle;
 
 
     ArrayList<String> splitsArr = new ArrayList<String>();
@@ -38,7 +44,10 @@ public class ChronometerFragment extends android.app.Fragment implements Runnabl
     Button mBtnStart, mBtnLap, mBtnStop;
     TextView mTvTimer;
     EditText mEtLaps;
+    //EditText mEtLapsSplit;
     ScrollView mSvLaps;
+
+    DatabaseReference dF;
 
     //keep track of how many times btn_lap was clicked
     int mLapCounter = 1;
@@ -58,13 +67,29 @@ public class ChronometerFragment extends android.app.Fragment implements Runnabl
         super.onViewCreated(view, savedInstanceState);
 
 
+        bundle = getArguments();
+        String temp = bundle.getString("swimmerReference");
+        dF = FirebaseDatabase.getInstance().getReference("Meets")
+                .child(bundle.getString("meetReference"))
+                .child("Events")
+                .child(bundle.getString("eventReference"))
+                .child(temp);
+
+
+
+        //Toolbar mActionBarToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        //mActionBarToolbar.setTitle(dF.toString());
+        //setSupportActionBar(mActionBarToolbar);
+
         mBtnStart = (Button) view.findViewById(R.id.btn_start);
         mBtnLap = (Button) view.findViewById(R.id.btn_lap);
         mBtnStop = (Button) view.findViewById(R.id.btn_stop);
 
         mTvTimer = (TextView) view.findViewById(R.id.tv_timer);
         mEtLaps = (EditText) view.findViewById(R.id.et_laps);
+        //mEtLapsSplit =  (EditText) view.findViewById(R.id.et_laps_split);
         mEtLaps.setEnabled(false); //prevent the et_laps to be editable
+        //mEtLapsSplit.setEnabled(false);
 
         mSvLaps = (ScrollView) view.findViewById(R.id.sv_lap);
 
@@ -79,6 +104,7 @@ public class ChronometerFragment extends android.app.Fragment implements Runnabl
 
 
                     mEtLaps.setText(""); //empty string!
+                    //mEtLapsSplit.setText("");
 
                     //reset the lap counter
                     mLapCounter = 1;
@@ -92,7 +118,8 @@ public class ChronometerFragment extends android.app.Fragment implements Runnabl
 
                    stop();
                    handler.removeCallbacks(updateTimerThread);
-
+                   System.out.println(bundle.getString("swimmerReference") + "Is this");
+                    dF.child("Splits").setValue(splitsArr);
                 }
                 //Intent intent = new Intent(ChronometerFragment.this, SaveActivity.class);
                 //intent.putExtra("EXTRA_SESSION_ID", mChrono.getList());
@@ -105,10 +132,11 @@ public class ChronometerFragment extends android.app.Fragment implements Runnabl
 
 
                 //we just simply copy the current text of tv_timer and append it to et_laps
-                String ans = "LAP " + String.valueOf(mLapCounter++)
+                String ans1 =  String.valueOf(mLapCounter++)
                         + "   " + getSplit();
-                ans = ans + "   " + getSplitTime() + "\n";
-                mEtLaps.append(ans);
+                String ans2 = "\n" + " " + getSplitTime() + "\n" + "\n";
+                mEtLaps.append(ans1 + ans2);
+                //mEtLapsSplit.append(ans2);
 
 
                 mSvLaps.post(new Runnable() {
@@ -136,9 +164,9 @@ public class ChronometerFragment extends android.app.Fragment implements Runnabl
                 int minutes = (int) ((since / (MILLIS_TO_MINUTES)) % 60);
                 //int hours = (int) ((since / (MILLS_TO_HOURS)) % 24); //this resets to  0 after 24 hour!
                 //int hours = (int) ((since / (MILLS_TO_HOURS))); //this does not reset to 0!
-                int millis = (int) since % 1000; //the last 3 digits of millisecs
+                int millis = (int) since % 100; //the last 3 digits of millisecs
 
-                mTvTimer.setText(String.format("%02d:%02d:%03d"
+                mTvTimer.setText(String.format("%02d:%02d:%02d"
                         , minutes, seconds, millis));
 
                 handler.postDelayed(this, 0);
@@ -196,7 +224,7 @@ public class ChronometerFragment extends android.app.Fragment implements Runnabl
         //int hours = (int) ((since / (MILLS_TO_HOURS)) % 24); //this resets to  0 after 24 hour!
         //int hours = (int) ((split / (MILLS_TO_HOURS))); //this does not reset to 0!
         int millis = (int) split % 100; //the last 3 digits of millisecs
-        String ans = String.format("%02d:%02d:%03d", minutes, seconds, millis);
+        String ans = String.format("%02d:%02d:%02d", minutes, seconds, millis);
         splitsArr.add(ans);
         return ans ;
     }
@@ -208,8 +236,8 @@ public class ChronometerFragment extends android.app.Fragment implements Runnabl
         int minutes = (int) ((time / (MILLIS_TO_MINUTES)) % 60);
         //int hours = (int) ((since / (MILLS_TO_HOURS)) % 24); //this resets to  0 after 24 hour!
         //int hours = (int) ((time / (MILLS_TO_HOURS))); //this does not reset to 0!
-        int millis = (int) time % 1000; //the last 3 digits of millisecs
-        return String.format("%02d:%02d:%03d", minutes, seconds, millis);
+        int millis = (int) time % 100; //the last 3 digits of millisecs
+        return String.format("%02d:%02d:%02d", minutes, seconds, millis);
     }
 
     public ArrayList<String> getList() {

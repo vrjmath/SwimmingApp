@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
+
     android:orientation="vertical"
     tools:context=".ChronometerActivity">
 
@@ -35,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="6"
-        android:background="@android:color/holo_blue_light"
+        android:background="@android:color/holo_orange_light"
         android:orientation="vertical">
 
         <ScrollView

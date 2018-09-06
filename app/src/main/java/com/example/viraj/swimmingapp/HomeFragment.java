@@ -1,14 +1,18 @@
 package com.example.viraj.swimmingapp;
 
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +23,40 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
 
-public class HomeFragment extends android.app.Fragment {
+
+public class HomeFragment extends Fragment {
     private ArrayList<String> data = new ArrayList<String>();
+    private ArrayList<String> images = new ArrayList<>();
     ArrayAdapter<String> adapter;
     private ListView lv;
+    DatabaseReference df;
+    private StorageReference mStorageRef;
+
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,20 +67,103 @@ public class HomeFragment extends android.app.Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
+
+        //Uri file = Uri.fromFile(new File("2018JulySectEvent #1 Finals.txt"));
+        final StorageReference riversRef = mStorageRef.child("2018JulySectEvent #1 Finals.txt");
+        try{
+        final File localFile = File.createTempFile("results", "txt");/*riversRef.getFile(localFile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            // Successfully downloaded data to local file
+                            // ...
+                            //String url = taskSnapshot.getDownloadUrl().toString();
+                            System.out.println("Success!");
+                            //Log.e("firebase file is here ",";local tem file created  created " +localFile.toString());
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle failed download
+                            // ...
+                            System.out.println("Fail!");
+                        }
+                    });*/
+
+            riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    //System.out.println(riversRef.getDownloadUrl() + " is the url");
+                    //DownloadManager.Request r = new DownloadManager.Request(uri);
+                    //Intent temp = new Intent(Intent.ACTION_VIEW, Uri.parse(uri.toString()));
+
+                    //Intent downloadIntent = new Intent(Intent.ACTION_VIEW);
+                    //downloadIntent.setData(Uri.parse(uri.toString()));
+                    //startActivity(downloadIntent);
+
+                    /*r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "fileName");
+                    r.allowScanningByMediaScanner();
+                    r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                    dm.enqueue(r);*/
+                    // Got the download URL for 'users/me/profile.png'
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
+        catch(Exception e){}
+
+
+
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("Swimmers");
+        //df.child(ln + ", " + fn).child("Birthdate").setValue(strDate);
+        //df =
+        df.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //HashMap<String, Object> dataMap = new HashMap<String, Object>();
+                for(DataSnapshot swimmer: dataSnapshot.getChildren()){
+                    data.add(swimmer.getKey() + " " );//+ swimmer.getValue().toString());
+                    System.out.println("has been read");
+                }
+                //Collections.sort(data);
+                adapter.notifyDataSetChanged();
+                Log.d("Data set", "It has changed");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         lv = (ListView) view.findViewById(R.id.listview);
 
-        adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text, data);
-        lv.setAdapter(adapter);
+        //TabHost tabHost = (TabHost) view.findViewById(android.R.id.tabhost);
 
-        generateListContent();
+        adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text,
+                 data);
+        lv.setAdapter(adapter);
+        //df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+        //df.child(ln + ", " + fn).child("Birthdate").setValue(strDate);
+        //generateListContent();
+
         adapter.notifyDataSetChanged();
-        //lv.setAdapter(new HomeActivity.MyListAdaper(this, R.layout.list_item, data));
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(MeetActivity.this, "List item was clicked at " + position, Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(HomeActivity.this, SpecificMeetActivity.class);
-                //HomeActivity.this.startActivity(intent);
+
             }
         });
 
@@ -62,18 +171,11 @@ public class HomeFragment extends android.app.Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //lv.invalidateViews();
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                // Get the layout inflater
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                //final EditText name = (EditText) findViewById(R.id.firstName);
 
                 final View dialogView = inflater.inflate(R.layout.new_swimmer, null);
                 builder.setView(dialogView)
-                        // Add action buttons
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
@@ -96,16 +198,17 @@ public class HomeFragment extends android.app.Fragment {
                                 /*if(!(TextUtils.isEmpty(fn) || TextUtils.isEmpty(ln))) {
                                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
                                 }*/
+                                FirebaseAuth mAuth1 = FirebaseAuth.getInstance();
+                                FirebaseUser user1 = mAuth1.getCurrentUser();
+                                df = FirebaseDatabase.getInstance().getReference("Users").child(user1.getUid()).child("Swimmers");
+                                df.child(ln + ", " + fn).child("Birthdate").setValue(strDate);
+
+                                //df.setValue(ln + ", " + fn + ": " + strDate);
                                 data.add(ln + ", " + fn + ": " + strDate);
-                                //for(int a = 0; a < data.size(); a ++)
-                                //System.out.println(data.get(a));
+
                                 adapter.notifyDataSetChanged();
 
-                                // Write a message to the database
-
-
-
-                                //myRef.setValue("Hello, World!");
+                                //Write message to databse
 
                             }
                         })
@@ -135,6 +238,12 @@ public class HomeFragment extends android.app.Fragment {
         for(int i = 0; i < 3; i++) {
             data.add("Bobs, Bob");
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 
     /*@Override

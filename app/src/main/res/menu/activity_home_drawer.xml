@@ -5,33 +5,38 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_swimmers"
+            android:icon="@drawable/ic_people"
+            android:title="Swimmers" />
+        <item
             android:id="@+id/nav_meets"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_timer"
             android:title="Meets" />
         <item
             android:id="@+id/nav_practice"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_pool"
             android:title="Practice" />
         <item
-            android:id="@+id/nav_swimmers"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Swimmers" />
-        <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Settings" />
+            android:icon="@drawable/ic_pool"
+            android:title="Practice (RFID)" />
+
+        <item
+            android:id="@+id/nav_attendance"
+            android:icon="@drawable/ic_people"
+            android:title="Attendance" />
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:icon="@drawable/ic_email"
+                android:title="Email" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Sign Out" />
         </menu>
     </item>
 

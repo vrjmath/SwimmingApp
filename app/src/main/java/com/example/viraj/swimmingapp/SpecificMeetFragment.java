@@ -32,11 +32,12 @@ import java.util.List;
 
 
 
-public class SpecificMeetFragment extends android.app.Fragment {
+public class SpecificMeetFragment extends Fragment {
     private ArrayList<String> data = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     ListView lv;
     DatabaseReference dF;
+    Bundle bundle1;
     DatabaseReference dF1;
     DatabaseReference dF2;
 
@@ -53,11 +54,14 @@ public class SpecificMeetFragment extends android.app.Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        bundle1 = getArguments();
+        System.out.println("arguments" + getArguments());
         lv = (ListView) view.findViewById(R.id.listview);
         adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text, data);
         lv.setAdapter(adapter);
         dF = FirebaseDatabase.getInstance().getReference("Meets");
-        dF1 = dF.child("2018 Presidents' Day Senior Swimming Classic");
+        System.out.println(bundle1.getString("Reference")+ "is this");
+        dF1 = dF.child(bundle1.getString("Reference"));
         dF2 = dF1.child("Events");
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -67,6 +71,8 @@ public class SpecificMeetFragment extends android.app.Fragment {
                 data.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("reference", data.get(position));
+                bundle.putInt("type", 1);
+                bundle.putString("meetReference", bundle1.getString("Reference"));
                 sef.setArguments(bundle);
                 getFragmentManager()
                         .beginTransaction()
@@ -75,13 +81,7 @@ public class SpecificMeetFragment extends android.app.Fragment {
             }
         });
 
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        dF2.addValueEventListener(new ValueEventListener() {
+        dF2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 HashMap<String, Object> dataMap = new HashMap<String, Object>();
@@ -90,8 +90,19 @@ public class SpecificMeetFragment extends android.app.Fragment {
                 }
                 //System.out.println(data.get(0));
                 System.out.println("here:" + data.get(0));
-
-                Collections.sort(data);
+                ArrayList<String> temp = new ArrayList<String>();
+                for(int a = 0; a < 100; a ++){
+                    for(int b = 0; b < data.size(); b ++) {
+                        System.out.println("it comes here");
+                        System.out.println("Data is:" +data.get(b));
+                        System.out.println("String:" + data.get(b).substring(0, data.get(b).indexOf(" ")));
+                        if(data.get(b).substring(0, data.get(b).indexOf(" ")).equals( a + ""))
+                            temp.add(data.get(b));
+                    }
+                }
+                //Collections.sort(data);
+                for(int a = 0; a < temp.size(); a ++)
+                    data.set(a, temp.get(a));
 
                 adapter.notifyDataSetChanged();
             }
@@ -102,6 +113,12 @@ public class SpecificMeetFragment extends android.app.Fragment {
             }
         });
 
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     /*@Override

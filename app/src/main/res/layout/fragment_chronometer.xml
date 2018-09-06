@@ -7,7 +7,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tools:context=".ChronometerActivity">
+    tools:context=".ChronometerFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:layout_gravity="center_horizontal"
             android:ellipsize="end"
             android:scrollbars="none"
-            android:text="00:00:000"
+            android:text="00:00:00"
             android:textAlignment="center"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="48dp"/>
@@ -35,13 +35,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="6"
-        android:background="@android:color/holo_blue_light"
+        android:background="@android:color/black"
         android:orientation="vertical">
 
         <ScrollView
             android:id="@+id/sv_lap"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            >
 
             <EditText
                 android:id="@+id/et_laps"
@@ -49,7 +51,9 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:allowUndo="false"
-                android:textColor="@android:color/black"/>
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="24dp" />
 
         </ScrollView>
 
@@ -60,37 +64,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="12"
-        android:background="@android:color/background_light"
+        android:background="@android:color/white"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_start"
+            android:background="@drawable/circle_button"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text="START"
+            android:textColor="@android:color/white"
             android:textSize="18dp"
-            android:background="@android:color/holo_blue_bright"
+
             android:typeface="monospace"/>
 
         <Button
             android:id="@+id/btn_lap"
+            android:background="@drawable/circle_button"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:text="LAP"
-            android:background="@android:color/holo_blue_bright"
+            android:textColor="@android:color/white"
             android:textSize="18dp"/>
 
         <Button
             android:id="@+id/btn_stop"
+            android:background="@drawable/circle_button"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text="STOP"
-            android:background="@android:color/holo_blue_bright"
+            android:textColor="@android:color/white"
+
             android:textSize="18dp"/>
     </LinearLayout>
 </LinearLayout>
