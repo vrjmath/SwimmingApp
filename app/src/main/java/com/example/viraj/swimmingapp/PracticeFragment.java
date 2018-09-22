@@ -3,14 +3,20 @@ package com.example.viraj.swimmingapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,16 +32,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 
+
 public class PracticeFragment extends Fragment{
     private ArrayList<String> data = new ArrayList<String>();
     DatabaseReference df;
-   ArrayAdapter<String> adapter;
+    ArrayAdapter<String> adapter;
+    MaterialSearchView searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +57,13 @@ public class PracticeFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         ListView lv = (ListView) view.findViewById(R.id.listview);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Search for Set");
+        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        searchView = (MaterialSearchView) view.findViewById(R.id.search_view);
+        setHasOptionsMenu(true);
+        //View view1 = inflater.inflate(R.layout.sample, null);
 
         adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text, data);
         lv.setAdapter(adapter);
@@ -144,5 +160,13 @@ public class PracticeFragment extends Fragment{
             }
         });
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
+        System.out.println("CALLED!!!");
+        inflater.inflate(R.menu.menu_item, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
     }
 }
