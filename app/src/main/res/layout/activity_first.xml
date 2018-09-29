@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/swimapp_background_android_crop"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".FirstActivity">
+
+    <!-- Login progress -->
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+<!--
+    <ImageView
+        android:id="@+id/appLogoLogin"
+        android:layout_width="258dp"
+        android:layout_height="189dp"
+        android:layout_marginBottom="321dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/swim_shark_logo" />
+
+-->
+    <TextView
+        android:id="@+id/loginLogoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:layout_marginBottom="300dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="300dp"
+        android:fontFamily="@font/lucida_sans_demibold_roman"
+        android:text="S W I M S H A R K"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/LightBlue"
+        android:textSize="30dp"
+        app:fontFamily="sans-serif"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="S W I M S H A R K" />
+
+    <Button
+        android:id="@+id/button2"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="101dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="254dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginLeft="201dp"
+        android:layout_marginRight="58dp"
+        android:layout_marginStart="201dp"
+        android:layout_marginTop="366dp"
+        android:background="@color/SeaBlue"
+        android:text="LOG IN"
+        android:textColor="@color/LightBlue"
+        app:fontFamily="@font/lucida_sans_demibold_roman"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="101dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="254dp"
+        android:layout_marginEnd="201dp"
+        android:layout_marginLeft="58dp"
+        android:layout_marginRight="201dp"
+        android:layout_marginStart="58dp"
+        android:layout_marginTop="366dp"
+        android:background="@color/LightGray"
+        android:text="SIGN UP"
+        android:textColor="@color/LightBlue"
+        app:fontFamily="@font/lucida_sans_demibold_roman"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="SIGN UP" />
+
+</android.support.constraint.ConstraintLayout>
