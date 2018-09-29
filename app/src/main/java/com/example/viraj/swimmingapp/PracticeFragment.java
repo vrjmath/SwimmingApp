@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -57,14 +58,24 @@ public class PracticeFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         ListView lv = (ListView) view.findViewById(R.id.listview);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+       /* Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Search for Set");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         searchView = (MaterialSearchView) view.findViewById(R.id.search_view);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true);*/
         //View view1 = inflater.inflate(R.layout.sample, null);
 
+        Button mMakeLanes = (Button) view.findViewById(R.id.MakeLanesButton);
+        mMakeLanes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.screen_area, new LaneFragment())
+                        .commit();
+            }
+        });
         adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text, data);
         lv.setAdapter(adapter);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -108,8 +119,8 @@ public class PracticeFragment extends Fragment{
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        //FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -126,7 +137,7 @@ public class PracticeFragment extends Fragment{
                 distanceSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 distanceSpinner.setAdapter(distanceSpinnerAdapter);
                 distanceSpinnerAdapter.notifyDataSetChanged();
-*/
+
                 final Spinner eventSpinner = (Spinner) dialogView.findViewById(R.id.spinner_event);
                 ArrayAdapter eventSpinnerAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.events_array, android.R.layout.simple_spinner_dropdown_item);
                 eventSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -158,7 +169,7 @@ public class PracticeFragment extends Fragment{
                 final AlertDialog dialog = builder.create();
                 dialog.show();
             }
-        });
+        });*/
 
     }
 

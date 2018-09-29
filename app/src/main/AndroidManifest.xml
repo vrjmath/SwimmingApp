@@ -18,10 +18,14 @@
             android:name=".LoginActivity"
             android:label="SwimShark"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
+
+            <!--
+                <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".HomeActivity"
@@ -29,6 +33,14 @@
         <activity android:name=".DialogActivity" />
         <activity android:name=".ChronometerActivity" />
         <activity android:name=".SaveActivity" />
+        <activity android:name=".FirstActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>

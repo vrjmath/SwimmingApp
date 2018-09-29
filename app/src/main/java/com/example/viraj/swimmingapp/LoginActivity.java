@@ -81,15 +81,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_temp);
+        setContentView(R.layout.activity_sign_in);
         getSupportActionBar().hide();
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.inputTeamName);
         populateAutoComplete();
 
         mAuth = FirebaseAuth.getInstance();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = (EditText) findViewById(R.id.inputPassword);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -108,8 +108,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 attemptLogin(2);
             }
         });
-
-        Button mRegisterButton = (Button) findViewById(R.id.register_button);
+        /*
+       Button mRegisterButton = (Button) findViewById(R.id.email_sign_up_button);
         mRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             }
         });
-
+*/
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
