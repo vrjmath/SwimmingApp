@@ -98,6 +98,7 @@ public class DynamicListView extends ListView {
 
     private boolean mIsWaitingForScrollFinish = false;
     private int mScrollState = OnScrollListener.SCROLL_STATE_IDLE;
+    boolean swap = false;
 
     public DynamicListView(Context context) {
         super(context);
@@ -141,7 +142,7 @@ public class DynamicListView extends ListView {
                     mCellIsMobile = true;
 
                     updateNeighborViewsForID(mMobileItemId);
-
+                   // setHeatLane(mCheeseList);
                     return true;
                 }
             };
@@ -203,9 +204,9 @@ public class DynamicListView extends ListView {
      * may be invalid.
      */
     private void updateNeighborViewsForID(long itemID) {
-        System.out.println("IDD:" + itemID + "");
+        //System.out.println("IDD:" + itemID + "");
         int position = getPositionForID(itemID);
-        System.out.println("POSITION:" + position);
+        //System.out.println("POSITION:" + position);
         StableArrayAdapter adapter = ((StableArrayAdapter)getAdapter());
         mAboveItemId = adapter.getItemId(position - 1);
         mBelowItemId = adapter.getItemId(position + 1);
@@ -213,15 +214,15 @@ public class DynamicListView extends ListView {
 
     /** Retrieves the view in the list corresponding to itemID */
     public View getViewForID (long itemID) {
-        System.out.println("FIRST:" + itemID);
+        //System.out.println("FIRST:" + itemID);
         int firstVisiblePosition = getFirstVisiblePosition();
         StableArrayAdapter adapter = ((StableArrayAdapter)getAdapter());
-        System.out.println("CHILDCOUNT:" + getChildCount());
+        //System.out.println("CHILDCOUNT:" + getChildCount());
         for(int i = 0; i < getChildCount(); i++) {
             View v = getChildAt(i);
             int position = firstVisiblePosition + i;
             long id = adapter.getItemId(position);
-            System.out.println("SECOND:" + id);
+            //System.out.println("SECOND:" + id);
             //System.out.println("VIEWIS:" + v);
             if (id == itemID) {
                 //System.out.println("ITMADEITHERE");
@@ -252,7 +253,7 @@ public class DynamicListView extends ListView {
 
     /** Retrieves the position in the list corresponding to itemID */
     public int getPositionForID (long itemID) {
-        System.out.println("ALMOST:" + itemID);
+        //System.out.println("ALMOST:" + itemID);
         View v = getViewForID(itemID);
         if (v == null) {
             return -1;
@@ -276,6 +277,7 @@ public class DynamicListView extends ListView {
 
     @Override
     public boolean onTouchEvent (MotionEvent event) {
+        //swap = false;
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
@@ -309,6 +311,12 @@ public class DynamicListView extends ListView {
                 break;
             case MotionEvent.ACTION_UP:
                 touchEventsEnded();
+               /* if(swap == true){
+                    System.out.println("CLASSNAME:" + l);
+                    if(l!=null)
+                        l.adapterStuff(mCheeseList);
+                }*/
+
                 break;
             case MotionEvent.ACTION_CANCEL:
                 touchEventsCancelled();
@@ -329,6 +337,7 @@ public class DynamicListView extends ListView {
                 break;
         }
 
+
         return super.onTouchEvent(event);
     }
 
@@ -342,14 +351,15 @@ public class DynamicListView extends ListView {
      * its new position.
      */
     private void handleCellSwitch() {
+       // swap = false;
         final int deltaY = mLastEventY - mDownY;
         int deltaYTotal = mHoverCellOriginalBounds.top + mTotalOffset + deltaY;
 
         View belowView = getViewForID(mBelowItemId);
         View mobileView = getViewForID(mMobileItemId);
         View aboveView = getViewForID(mAboveItemId);
-        System.out.println("BELOW:" + mBelowItemId + ", REG:" + mMobileItemId +
-        ", ABOVE:" + mAboveItemId);
+    /*    System.out.println("BELOW:" + mBelowItemId + ", REG:" + mMobileItemId +
+        ", ABOVE:" + mAboveItemId);*/
 
         boolean isBelow = (belowView != null) && (deltaYTotal > belowView.getTop());
         boolean isAbove = (aboveView != null) && (deltaYTotal < aboveView.getTop());
@@ -381,9 +391,11 @@ public class DynamicListView extends ListView {
             mDownY = mLastEventY;
 
             final int switchViewStartTop = switchView.getTop();
-            System.out.println("MOBILEID:" + mMobileItemId);
+          //  System.out.println("MOBILEID:" + mMobileItemId);
             updateNeighborViewsForID(mMobileItemId);
             updateNeighborViewsForID(mMobileItemId);
+
+
 
             final ViewTreeObserver observer = getViewTreeObserver();
             observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -409,10 +421,12 @@ public class DynamicListView extends ListView {
             });
         }
 
-
     }
 
     private void swapElements(ArrayList arrayList, int indexOne, int indexTwo) {
+        swap = false;
+        if(indexOne != indexTwo){System.out.println("ONE:" +indexOne + "TWO:" + indexTwo);
+            swap = true;}
         Object temp = arrayList.get(indexOne);
         arrayList.set(indexOne, arrayList.get(indexTwo));
         arrayList.set(indexTwo, temp);
@@ -482,9 +496,6 @@ public class DynamicListView extends ListView {
             touchEventsCancelled();
         }
 
-        System.out.println("CLASSNAME:" + l);
-        if(l!=null)
-            l.adapterStuff(mCheeseList);
     }
 
     /**
@@ -599,6 +610,7 @@ public class DynamicListView extends ListView {
             mCurrentScrollState = scrollState;
             mScrollState = scrollState;
             isScrollCompleted();
+
         }
 
         /**
@@ -627,7 +639,9 @@ public class DynamicListView extends ListView {
             if (mCurrentFirstVisibleItem != mPreviousFirstVisibleItem) {
                 if (mCellIsMobile && mMobileItemId != INVALID_ID) {
                     updateNeighborViewsForID(mMobileItemId);
+                    //System.out.println("BEFOREHANDLECELLSWITCH");
                     handleCellSwitch();
+
                 }
             }
         }
@@ -643,20 +657,36 @@ public class DynamicListView extends ListView {
                 if (mCellIsMobile && mMobileItemId != INVALID_ID) {
                     updateNeighborViewsForID(mMobileItemId);
                     handleCellSwitch();
+
                 }
             }
+
+
         }
     };
 
     public void setHeatLane(ArrayList<String> cheese){
         for(int a = 0; a < cheese.size(); a ++) {
-            cheese.set(a, "H" + a/5 + "L" + a%5);
+            cheese.set(a,  cheese.get(a) + ".");
         }
+      /*  for(int a = 0; a < cheese.size(); a ++) {
+            cheese.set(a,  "H" + a/5 + "L" + a%5);
+        }
+
+        for(int x = 0; x < cheese.size(); x ++) {
+            System.out.println("ORDER:" + getAdapter().getItemId(x));
+        }*/
         //((BaseAdapter) getAdapter()).notifyDataSetChanged();
         //getAdapter().notify
     }
 
     public void setLaneFragment(LaneFragment lane) {
         l = lane;
+    }
+
+    public void resetHeatAndLanes() {
+        //System.out.println("CLASSNAME:" + l);
+       /* if(l!=null)
+            l.adapterStuff(mCheeseList);*/
     }
 }

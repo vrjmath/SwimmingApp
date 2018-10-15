@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,8 +26,13 @@ import java.util.List;
 
 
 public class LaneFragment extends Fragment {
+    private ArrayList<String> data = new ArrayList<String>();
+
+    private ObservableScrollView scrollView1 = null;
+    private ObservableScrollView scrollView2 = null;
+
     ArrayList<String> mCheeseList;
-    StableArrayAdapter adapter;
+    ArrayAdapter<String> adapter;
     View v;
     public LaneFragment() {
         // Required empty public constructor
@@ -49,6 +56,10 @@ public class LaneFragment extends Fragment {
         //df.child(ln + ", " + fn).child("Birthdate").setValue(strDate);
         //df =
 
+        //scrollView1 = (ObservableScrollView) view.findViewById(R.id.scrollview1);
+       // scrollView1.setScrollViewListener();
+       // scrollView2 = (ObservableScrollView) view.findViewById(R.id.scrollview2);
+        //scrollView2.setScrollViewListener();
         System.out.println("REFE:" +df.toString());
         df.addValueEventListener(new ValueEventListener() {
             @Override
@@ -59,6 +70,10 @@ public class LaneFragment extends Fragment {
                     System.out.println("has been read in here!!!");
                     System.out.println("VALUEISIS:" + swimmer.getValue().toString());
                     adapterStuff(mCheeseList);
+                    //ListView lvI = (ListView) view.findViewById(R.id.scrollview2);
+                    //makeData(mCheeseList.size());
+                    //adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item, R.id.list_item_text, data);
+                    //lvI.setAdapter(adapter);
                 }
                 //adapter.notifyDataSetChanged();
             }
@@ -75,12 +90,29 @@ public class LaneFragment extends Fragment {
             System.out.println("HEREIS:" + mCheeseList.get(i));
         }
 
+        Button next = (Button) view.findViewById(R.id.next);
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HeatLaneDisplayFragment hldf = new HeatLaneDisplayFragment();
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("Order", mCheeseList );
+                hldf.setArguments(bundle);
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.screen_area, hldf)
+                        .commit();
+            }
+            });
     }
 
     public void adapterStuff(ArrayList<String> temp) {
 
-        setHeatLane(temp);
-        for(int x = 0; x < temp.size(); x ++) {
+
+       // setHeatLane(temp);
+
+        /*for(int x = 0; x < temp.size(); x ++) {
             String value = temp.get(x);
             int index = value.indexOf(' ') + 2;
             int secondIndex = 0;
@@ -98,9 +130,9 @@ public class LaneFragment extends Fragment {
         //for(int y = 0; y < temp.size(); y ++) {
          //   String aValue = temp.get(y);
           //  String bValue = aValue.substring(0, aValue.indexOf(''))
-        //}
+        //}*/
         adapter = new StableArrayAdapter(getActivity(), R.layout.text_view, temp);
-        DynamicListView listView = (DynamicListView) v.findViewById(R.id.listview);
+        DynamicListView listView = (DynamicListView) v.findViewById(R.id.scrollview1);
         listView.setLaneFragment(this);
         listView.setCheeseList(mCheeseList);
         listView.setAdapter(adapter);
@@ -117,5 +149,20 @@ public class LaneFragment extends Fragment {
         }
     }
 
+    public void makeData(int a){
+        for(int x = 0; x < a; x ++) {
+            data.add("H" + a/5 + "L" + a%5);
+        }
+    }
+    public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
+        if(scrollView == scrollView1) {
+            scrollView2.scrollTo(x, y);
+        } else if(scrollView == scrollView2) {
+            scrollView1.scrollTo(x, y);
+        }
+    }
+
 
     }
+
+

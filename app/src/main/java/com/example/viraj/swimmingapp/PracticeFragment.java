@@ -57,7 +57,7 @@ public class PracticeFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ListView lv = (ListView) view.findViewById(R.id.listview);
+        //ListView lv = (ListView) view.findViewById(R.id.listview);
        /* Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Search for Set");
@@ -76,14 +76,14 @@ public class PracticeFragment extends Fragment{
                         .commit();
             }
         });
-        adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text, data);
+    /*    adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text, data);
         lv.setAdapter(adapter);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("SwimPractice");
         //df.child(ln + ", " + fn).child("Birthdate").setValue(strDate);
         //df =
-        df.addListenerForSingleValueEvent(new ValueEventListener() {
+     /*   df.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //HashMap<String, Object> dataMap = new HashMap<String, Object>();
@@ -102,9 +102,9 @@ public class PracticeFragment extends Fragment{
             }
         });
         //data.add("10 100's Freestyle");
-        adapter.notifyDataSetChanged();
+       // adapter.notifyDataSetChanged();
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      /*  lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SetFragment sf = new SetFragment();
