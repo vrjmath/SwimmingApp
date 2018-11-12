@@ -10,17 +10,18 @@
             android:title="Swimmers" />
         <item
             android:id="@+id/nav_meets"
+            android:visible="false"
             android:icon="@drawable/ic_timer"
             android:title="Meets" />
         <item
             android:id="@+id/nav_practice"
             android:icon="@drawable/ic_pool"
-            android:title="Practice" />
+            android:title="Lane Maker" />
         <item
             android:id="@+id/nav_settings"
+            android:visible="false"
             android:icon="@drawable/ic_pool"
             android:title="Practice (RFID)" />
-
         <item
             android:id="@+id/nav_attendance"
             android:icon="@drawable/ic_people"
@@ -32,7 +33,7 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_email"
-                android:title="Email" />
+                android:title="Feedback" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"

@@ -163,7 +163,25 @@ public class HomeFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
 
+                final View dialogView = inflater.inflate(R.layout.new_swimmer, null);
+                builder.setView(dialogView)
+                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                EditText firstName = (EditText) dialogView.findViewById(R.id.firstName);
+
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //HomeActivity.this.getDialog().cancel();
+                            }
+                        });
+                final AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -191,7 +209,6 @@ public class HomeFragment extends Fragment {
                                 SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy");
                                 Date d = new Date(year, month, day);
                                 String strDate = dateFormatter.format(d);
-
 
                                 String fn = firstName.getText().toString();
                                 String ln = lastName.getText().toString();

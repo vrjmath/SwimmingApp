@@ -24,20 +24,22 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="SpinnerDistance">Distance</string>
 
-    <string-array name="stroke_array">
-        <item>Freestyle</item>
-    </string-array>
 
-    <string-array name="distance_array">
+    <!--  <string-array name="stroke_array">
+          <item>Freestyle</item>
+      </string-array>-->
+
+ <!--   <string-array name="distance_array">
         <item>50</item>
         <item>100</item>
-    </string-array>
+    </string-array>-->
 
-    <string-array name="events_array">
+<!--   <string-array name="events_array">
         <item>50 Freestyle</item>
         <item>100 Freestyle</item>
-    </string-array>
+    </string-array>-->
 
 
 </resources>

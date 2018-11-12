@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -80,7 +82,7 @@ public class AttendanceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        ListView lv = (ListView) view.findViewById(R.id.listview);
+        final ListView lv = (ListView) view.findViewById(R.id.listview);
 
         adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item_swimmer_time, R.id.list_item_text, data);
         lv.setAdapter(adapter);
@@ -90,15 +92,26 @@ public class AttendanceFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                x++;
+              /*  x++;
                 String temp = data.get(position);
-                present.add(temp);
-                data.remove(position);
-                adapter.notifyDataSetChanged();
+                present.add(temp);*/
+                //lv.getItemAtPosition(position);
 
+                ImageView imageView = (ImageView) view.findViewById(R.id.check_mark);
+                System.out.println("IMAGEVIEW:" + imageView);
+                if (imageView.getVisibility() == View.INVISIBLE) {
+                    imageView.setVisibility(View.VISIBLE);
+                } else {
+                    imageView.setVisibility(View.INVISIBLE);
+                }
+
+                //data.remove(position);
+                adapter.notifyDataSetChanged();
 
             }
         });
+
+    }/*
         next = (Button) view.findViewById(R.id.next);
         retake = (Button) view.findViewById(R.id.retake);
         next.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +156,7 @@ public class AttendanceFragment extends Fragment {
     }
 
 
-            @Override
+      /*      @Override
             public boolean onOptionsItemSelected(MenuItem item) {
                 // Handle action bar item clicks here. The action bar will
                 // automatically handle clicks on the Home/Up button, so long
@@ -156,5 +169,5 @@ public class AttendanceFragment extends Fragment {
                 }
 
                 return super.onOptionsItemSelected(item);
-            }
+            }*/
     }

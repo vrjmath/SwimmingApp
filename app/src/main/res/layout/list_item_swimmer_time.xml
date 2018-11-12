@@ -13,9 +13,23 @@
         android:id="@+id/list_item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="left"
         android:text="This is row number 15"
-        android:textSize="24dp"
+        android:textSize="30dp"
         app:fontFamily="sans-serif" />
+
+    <ImageView
+        android:src="@drawable/ic_check"
+        android:id="@+id/check_mark"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_height="match_parent"
+        android:visibility="invisible"/>
+
+    <!--<CheckBox
+        android:id="@+id/check_box"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_height="wrap_content" />-->
 
 </RelativeLayout>

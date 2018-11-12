@@ -30,6 +30,7 @@ public class LaneFragment extends Fragment {
 
     private ObservableScrollView scrollView1 = null;
     private ObservableScrollView scrollView2 = null;
+    Bundle inputBundle;
 
     ArrayList<String> mCheeseList;
     ArrayAdapter<String> adapter;
@@ -48,11 +49,22 @@ public class LaneFragment extends Fragment {
 
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        inputBundle = getArguments();
+        String event = inputBundle.getString("Stroke");
+        String temp = inputBundle.getString("Distance");
+        if(event.equals("Freestyle")){event = "Free";}
+        else if(event.equals("Backstroke")){event = "Back";}
+        else if(event.equals("Breastroke")){event = "Breast";}
+        else if(event.equals("Butterfly")){event = "Fly";}
+        else if(event.equals("I.M.")){event = "IM";}
+        event = "\"" + temp + " Yd " +event + "\"";
+        //"\"100 M Free\""
+        System.out.println("EVENT:" + event);
         v = view;
         mCheeseList = new ArrayList<String>();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        DatabaseReference df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("\"100 M Free\"");
+        DatabaseReference df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child(event);
         //df.child(ln + ", " + fn).child("Birthdate").setValue(strDate);
         //df =
 

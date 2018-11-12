@@ -6,17 +6,6 @@
     android:background="@android:color/white"
 
     android:descendantFocusability="blocksDescendants">
-    <!--android:background="@drawable/clear_background_1"-->
-
-   <!--  <ImageView
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:id="@+id/list_item_thumbnail"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_ic_swimmers_icon" />
-        -->
 
     <TextView
         android:id="@+id/list_item_text"

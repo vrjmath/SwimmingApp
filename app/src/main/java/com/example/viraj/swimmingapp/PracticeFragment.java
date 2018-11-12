@@ -46,6 +46,10 @@ public class PracticeFragment extends Fragment{
     DatabaseReference df;
     ArrayAdapter<String> adapter;
     MaterialSearchView searchView;
+    String distance;
+    String stroke;
+    String pool;
+    String attendance;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +61,88 @@ public class PracticeFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //ListView lv = (ListView) view.findViewById(R.id.listview);
+        final Spinner eventSpinner = (Spinner) view.findViewById(R.id.spinnerDistance);
+       // spinner.setPrompt("Title");
+        ArrayAdapter<CharSequence> distanceAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.distance_array, android.R.layout.simple_spinner_item);
+        distanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        eventSpinner.setAdapter(distanceAdapter);
+        eventSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+
+                distance = eventSpinner.getSelectedItem().toString();
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        final Spinner strokeSpinner = (Spinner) view.findViewById(R.id.spinnerStroke);
+        // spinner.setPrompt("Title");
+        ArrayAdapter<CharSequence> strokeAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.stroke_array, android.R.layout.simple_spinner_item);
+        strokeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        strokeSpinner.setAdapter(strokeAdapter);
+        strokeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+
+                stroke = strokeSpinner.getSelectedItem().toString();
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        final Spinner poolSpinner = (Spinner) view.findViewById(R.id.spinnerPool);
+        // spinner.setPrompt("Title");
+        ArrayAdapter<CharSequence> poolAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.pool_array, android.R.layout.simple_spinner_item);
+        poolAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        poolSpinner.setAdapter(poolAdapter);
+        poolSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+
+                pool = poolSpinner.getSelectedItem().toString();
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        final Spinner attendanceSpinner = (Spinner) view.findViewById(R.id.spinnerAttendance);
+        // spinner.setPrompt("Title");
+        ArrayAdapter<CharSequence> attendanceAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.attendance_array, android.R.layout.simple_spinner_item);
+        attendanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        attendanceSpinner.setAdapter(attendanceAdapter);
+        attendanceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+
+                attendance = attendanceSpinner.getSelectedItem().toString();
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+            //ListView lv = (ListView) view.findViewById(R.id.listview);
        /* Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Search for Set");
@@ -70,9 +155,17 @@ public class PracticeFragment extends Fragment{
         mMakeLanes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LaneFragment lf = new LaneFragment();
+                Bundle b = new Bundle();
+                b.putString("Distance", distance);
+                b.putString("Stroke", stroke);
+                b.putString("Pool", pool);
+                b.putString("Attendance", attendance);
+               // System.out.println("INFORMATION:" +distance + stroke);
+                lf.setArguments(b);
                 getFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.screen_area, new LaneFragment())
+                        .replace(R.id.screen_area, lf)
                         .commit();
             }
         });
