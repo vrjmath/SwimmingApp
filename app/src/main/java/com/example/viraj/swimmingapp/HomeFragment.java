@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -42,8 +48,11 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 
@@ -51,10 +60,12 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 public class HomeFragment extends Fragment {
     private ArrayList<String> data = new ArrayList<String>();
     private ArrayList<String> images = new ArrayList<>();
+
     ArrayAdapter<String> adapter;
     private ListView lv;
     DatabaseReference df;
     private StorageReference mStorageRef;
+    String stroke;
 
 
 
@@ -136,7 +147,13 @@ public class HomeFragment extends Fragment {
                     data.add(swimmer.getKey() + " " );//+ swimmer.getValue().toString());
                     System.out.println("has been read");
                 }
-                //Collections.sort(data);
+                /*ArrayList<Integer> order = new ArrayList<>();
+                for(int x = 0; x < data.size(); x ++)
+                    order.set(x, Integer.parseInt(data.get(x).substring(' ' + 1)));
+                Collections.sort(order);
+                for(int a = 0; a<order.size(); a ++)
+                    System.out.println("NUMBER:" + order.get(a));*/
+                Collections.sort(data);
                 adapter.notifyDataSetChanged();
                 Log.d("Data set", "It has changed");
             }
@@ -150,9 +167,9 @@ public class HomeFragment extends Fragment {
         lv = (ListView) view.findViewById(R.id.listview);
 
         //TabHost tabHost = (TabHost) view.findViewById(android.R.id.tabhost);
-
-        adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text,
-                 data);
+//R.layout.list_item, R.id.list_item_text
+        adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item_recycler_template, R.id.lbl_message
+                , data);
         lv.setAdapter(adapter);
         //df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
         //df.child(ln + ", " + fn).child("Birthdate").setValue(strDate);
@@ -162,16 +179,50 @@ public class HomeFragment extends Fragment {
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
 
-                final View dialogView = inflater.inflate(R.layout.new_swimmer, null);
+                final View dialogView = inflater.inflate(R.layout.swimmer_times, null);
+                final EditText firstName = (EditText) dialogView.findViewById(R.id.times);
+                firstName.setEnabled(false);
+                String name1 = lv.getItemAtPosition(position).toString();
+                name1 = name1.substring(name1.indexOf(',') + 2).toLowerCase() +
+                        name1.substring(0,name1.indexOf(',')).toLowerCase();
+                //name1 = "\"" + name1 + "\"";
+                System.out.println("NAMEIS:" + name1);
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mAuth.getCurrentUser();
+                df = FirebaseDatabase.getInstance().getReference("Swimmer Database").child(name1);
+                System.out.println("DATAREF:" + df);
+                df.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //HashMap<String, Object> dataMap = new HashMap<String, Object>();
+                        for (DataSnapshot swimmer : dataSnapshot.getChildren()) {
+                            String event = swimmer.getKey();
+                            if(event.equals("Age") || event.equals("Gender")
+                                    || event.equals("Team")){}
+                                    else {
+                                String time = swimmer.getValue().toString();
+                                event = event.substring(1, event.length()-1);
+                                time = time.substring(0, time.length());
+                                String temp = event + time;
+                                //  System.out.println("TIMEARE:"  + temp);
+                                firstName.append(event + " "  +time + "\n");
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 builder.setView(dialogView)
-                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                EditText firstName = (EditText) dialogView.findViewById(R.id.firstName);
+
 
                             }
                         })
@@ -199,7 +250,27 @@ public class HomeFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 EditText firstName = (EditText) dialogView.findViewById(R.id.firstName);
                                 EditText lastName = (EditText) dialogView.findViewById(R.id.lastName);
-                                DatePicker datePicker = (DatePicker) dialogView.findViewById(R.id.datePicker);
+                                EditText age = (EditText) dialogView.findViewById(R.id.age);
+                                RadioGroup rb = (RadioGroup)dialogView.findViewById(R.id.radioButton);
+                                int rbID = rb.getCheckedRadioButtonId();
+                                System.out.println("RADIO BUTTON ID:" + rbID);
+                                String gender;
+
+                                if(rbID == 2131361976)
+                                    gender = "Male";
+                                else
+                                    gender = "Female";
+                                final Spinner strokeSpinner = (Spinner) dialogView.findViewById(R.id.spinnerBestStroke);
+                                // spinner.setPrompt("Title");
+                               /* ArrayAdapter<CharSequence> strokeAdapter = ArrayAdapter.createFromResource(getActivity(),
+                                        R.array.best_stroke_array, android.R.layout.simple_spinner_item);
+                                strokeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                strokeSpinner.setAdapter(strokeAdapter);*/
+                                stroke = strokeSpinner.getSelectedItem().toString();
+
+
+                                 /*
+                               (DatePicker) dialogView.findViewById(R.id.datePicker);
 
                                 int day = datePicker.getDayOfMonth();
                                 int month = datePicker.getMonth();
@@ -208,22 +279,30 @@ public class HomeFragment extends Fragment {
 
                                 SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy");
                                 Date d = new Date(year, month, day);
-                                String strDate = dateFormatter.format(d);
+                                String strDate = dateFormatter.format(d);*/
 
                                 String fn = firstName.getText().toString();
                                 String ln = lastName.getText().toString();
+                                String swimmerAge = age.getText().toString();
                                 /*if(!(TextUtils.isEmpty(fn) || TextUtils.isEmpty(ln))) {
                                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
                                 }*/
                                 FirebaseAuth mAuth1 = FirebaseAuth.getInstance();
                                 FirebaseUser user1 = mAuth1.getCurrentUser();
                                 df = FirebaseDatabase.getInstance().getReference("Users").child(user1.getUid()).child("Swimmers");
-                                df.child(ln + ", " + fn).child("Birthdate").setValue(strDate);
+                                df.child(ln + ", " + fn).child("Age").setValue(swimmerAge);
+                                df.child(ln + ", " + fn).child("Gender").setValue(gender);
+                                df.child(ln + ", " + fn).child("Best Stroke").setValue(stroke);
 
                                 //df.setValue(ln + ", " + fn + ": " + strDate);
-                                data.add(ln + ", " + fn + ": " + strDate);
+                                data.add(ln + ", " + fn + ": ");
 
                                 adapter.notifyDataSetChanged();
+                                HomeFragment hf = new HomeFragment();
+                                getFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.screen_area, hf)
+                                        .commit();
 
                                 //Write message to databse
 
@@ -261,69 +340,6 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-    }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_meet, menu);
-        return true;
-    }*/
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
-    private class MyListAdaper extends ArrayAdapter<String> {
-        private int layout;
-        private List<String> mObjects;
-        private MyListAdaper(Context context, int resource, List<String> objects) {
-            super(context, resource, objects);
-            mObjects = objects;
-            layout = resource;
-        }
-
-       /* @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            HomeFragment.ViewHolder mainViewholder = null;
-            if(convertView == null) {
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(layout, parent, false);
-                //HomeFragment.ViewHolder viewHolder = new HomeFragment().ViewHolder();
-               // viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.list_item_thumbnail);
-               // viewHolder.title = (TextView) convertView.findViewById(R.id.list_item_text);
-                //viewHolder.button = (Button) convertView.findViewById(R.id.list_item_btn);
-              //  convertView.setTag(viewHolder);
-            }
-            mainViewholder = (HomeFragment.ViewHolder) convertView.getTag();
-            /*mainViewholder.button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Toast.makeText(getContext(), "Button was clicked for list item " + position, Toast.LENGTH_SHORT).show();
-
-                }
-            });
-            mainViewholder.title.setText(getItem(position));
-
-            return convertView;
-        }*/
-    }
-    public class ViewHolder {
-
-        ImageView thumbnail;
-        TextView title;
-        Button button;
     }
 
 }

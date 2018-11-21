@@ -24,7 +24,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,7 +63,22 @@ public class PracticeFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final Spinner eventSpinner = (Spinner) view.findViewById(R.id.spinnerDistance);
+
+        NumberPicker n = (NumberPicker)view.findViewById(R.id.pickerDistance);
+        final String[] a={"50","100","200","400", "500", "1000"};
+        distance = "50";
+        n.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        n.setDisplayedValues(a);
+        n.setMaxValue(5);
+        n.setMinValue(0);
+        n.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                distance = a[newVal];
+
+            }
+        });
+        /*final Spinner eventSpinner = (Spinner) view.findViewById(R.id.spinnerDistance);
        // spinner.setPrompt("Title");
         ArrayAdapter<CharSequence> distanceAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.distance_array, android.R.layout.simple_spinner_item);
@@ -79,7 +96,7 @@ public class PracticeFragment extends Fragment{
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
             }
-        });
+        });*/
 
         final Spinner strokeSpinner = (Spinner) view.findViewById(R.id.spinnerStroke);
         // spinner.setPrompt("Title");
@@ -121,7 +138,10 @@ public class PracticeFragment extends Fragment{
             }
         });
 
-        final Spinner attendanceSpinner = (Spinner) view.findViewById(R.id.spinnerAttendance);
+        final EditText numLanes = (EditText) view.findViewById(R.id.numLanes);
+
+
+      /*  final Spinner attendanceSpinner = (Spinner) view.findViewById(R.id.spinnerAttendance);
         // spinner.setPrompt("Title");
         ArrayAdapter<CharSequence> attendanceAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.attendance_array, android.R.layout.simple_spinner_item);
@@ -141,7 +161,7 @@ public class PracticeFragment extends Fragment{
             }
         });
 
-
+*/
             //ListView lv = (ListView) view.findViewById(R.id.listview);
        /* Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
@@ -155,18 +175,43 @@ public class PracticeFragment extends Fragment{
         mMakeLanes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String numL;
+
+                try {
+                     numL = numLanes.getText().toString();
+                }catch(Exception e){return;}
+                if (numLanes.equals("0") || numLanes.equals("")){
+                    return;
+                }
+
                 LaneFragment lf = new LaneFragment();
-                Bundle b = new Bundle();
-                b.putString("Distance", distance);
-                b.putString("Stroke", stroke);
-                b.putString("Pool", pool);
-                b.putString("Attendance", attendance);
-               // System.out.println("INFORMATION:" +distance + stroke);
-                lf.setArguments(b);
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.screen_area, lf)
-                        .commit();
+                boolean go = false;
+                if(distance.equals("50") && stroke.equals("Freestyle")){go = true;}
+                else if(distance.equals("100") && !stroke.equals("I.M.")){go = true;}
+                else if(distance.equals("200")){go = true;}
+                else if(distance.equals("400") && stroke.equals("I.M.")){go = true;}
+                else if(distance.equals("400") && (stroke.equals("Freestyle") || stroke.equals("I.M.")) && pool.equals("Long Course Meters")){go = true;}
+                else if(distance.equals("500") && stroke.equals("Freestyle") && pool.equals("Short Course Yards")){go = true;}
+                else if(distance.equals("1000") && stroke.equals("Freestyle") && pool.equals("Short Course Yards")){go = true;}
+
+                if(go == true) {
+                    Bundle b = new Bundle();
+                    b.putString("Distance", distance);
+                    b.putString("Stroke", stroke);
+                    b.putString("Pool", pool);
+                    b.putString("Lanes", numL);
+                    // System.out.println("INFORMATION:" +distance + stroke);
+                    lf.setArguments(b);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.screen_area, lf)
+                            .commit();
+                }
+                else
+                {
+                    Toast.makeText(getActivity(),
+                            "Please enter a valid event", Toast.LENGTH_LONG).show();
+                }
             }
         });
     /*    adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text, data);

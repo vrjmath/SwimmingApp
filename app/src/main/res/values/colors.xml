@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#006994</color>
+   <color name="colorPrimary">#006994</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+   <!-- <color name="colorPrimary">#121212</color>
+  <color name="colorPrimary">#FFF</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#80D8FF</color>-->
+    <color name="colorWindowBackground">#121212</color>
+
+    <color name ="white">#FFF</color>
     <color name="ryanscolor">#006994</color>
     <color name="tooMuchBlue">#003348</color>
     <color name="LightBlue">#e2f7ff</color>
     <color name="SeaBlue">#006994</color>
     <color name="LightGray">#20b2aa</color>
     <color name="black_overlay">#66000000</color>
+    <color name="black">#000</color>
 </resources>

@@ -6,41 +6,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/LightBlue"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".PracticeFragment"
     tools:showIn="@layout/app_bar_home">
 
-    <Spinner
+    <TextView
+        android:text="Distance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <NumberPicker
+        android:id="@+id/pickerDistance"
+        android:layout_width="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="80dp"></NumberPicker>
+
+    <!--<Spinner
         android:id="@+id/spinnerDistance"
         android:prompt="@string/SpinnerDistance"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content" />-->
 
     <Spinner
         android:id="@+id/spinnerStroke"
-        android:layout_marginTop="60dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Spinner
-        android:id="@+id/spinnerPool"
         android:layout_marginTop="120dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Spinner
-        android:id="@+id/spinnerAttendance"
+        android:id="@+id/spinnerPool"
         android:layout_marginTop="180dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/MakeLanesButton"
+    <EditText
+        android:id="@+id/numLanes"
+        android:hint="# Lanes"
+        android:inputType="number"
         android:layout_marginTop="240dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        />
+
+  <!--  <Spinner
+        android:id="@+id/spinnerAttendance"
+        android:layout_marginTop="180dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />-->
+
+    <Button
+        android:id="@+id/MakeLanesButton"
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        android:layout_marginTop="470dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+
         android:text="Make Lanes"/>
+
+
 
 
   <!--  <android.support.v7.widget.Toolbar

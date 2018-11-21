@@ -152,8 +152,8 @@ public class HomeActivity extends AppCompatActivity
                     .commit();
 
         } else if (id == R.id.nav_share) {
-            String to = "vrjmath@gmail.com,hajelasumer@gmail.com";
-            String subject = "SwimApp Review";
+            String to = "swimsharktech@gmail.com";
+            String subject = "SwimApp Feedback";
             String message = "Hello";
             String[] recipients = to.split(",");
             Intent intent = new Intent(Intent.ACTION_SEND);

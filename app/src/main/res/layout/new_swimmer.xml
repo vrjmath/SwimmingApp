@@ -1,38 +1,63 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-   <!-- <ImageView
+    android:layout_height="wrap_content"
+    android:background="@color/LightBlue">
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="128dp"
-        android:scaleType="center"
-        android:background="#FFFFBB33"
-        android:contentDescription="@string/app_name" />
-        -->
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/lucida_sans_demibold_roman"
+            android:text="First Name"/>
     <EditText
         android:id="@+id/firstName"
+        android:layout_weight="3"
         android:inputType="text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="First Name" />
+    />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/lastName"
-        android:inputType="text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:fontFamily="sans-serif"
-        android:hint="Last Name"/>
+        android:orientation="horizontal">
 
-    <TextView
+        <TextView
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/lucida_sans_demibold_roman"
+            android:text="Last Name"/>
+        <EditText
+            android:id="@+id/lastName"
+            android:layout_weight="3"
+            android:inputType="text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            />
+    </LinearLayout>
+
+ <!--   <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
@@ -41,14 +66,112 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="1dp"
         android:text="Birth Date"
-        android:textSize="18sp"/>
+        android:textSize="18sp"/> -->
 
-    <DatePicker
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:fontFamily="@font/lucida_sans_demibold_roman"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"/>
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_weight="3"
+            android:id="@+id/radioButton"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/radio_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                />
+            <RadioButton android:id="@+id/radio_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:text="Female"
+                />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age"
+            android:fontFamily="@font/lucida_sans_demibold_roman"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/age"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:inputType="number" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Best Stroke"
+            android:fontFamily="@font/lucida_sans_demibold_roman"
+            android:layout_weight="3"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="15dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerBestStroke"
+            android:layout_width="118dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/best_stroke_array" />
+
+    </LinearLayout>
+
+ <!--   <DatePicker
         android:id="@+id/datePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:datePickerMode="spinner"
-        android:calendarViewShown="false"/>
+        android:calendarViewShown="false"/>-->
 
 
 </LinearLayout>

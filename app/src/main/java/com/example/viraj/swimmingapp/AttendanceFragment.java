@@ -92,26 +92,26 @@ public class AttendanceFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-              /*  x++;
+                x++;
                 String temp = data.get(position);
-                present.add(temp);*/
-                //lv.getItemAtPosition(position);
+                present.add(temp);
+               // lv.getItemAtPosition(position);
 
-                ImageView imageView = (ImageView) view.findViewById(R.id.check_mark);
+              /*  ImageView imageView = (ImageView) view.findViewById(R.id.check_mark);
                 System.out.println("IMAGEVIEW:" + imageView);
                 if (imageView.getVisibility() == View.INVISIBLE) {
                     imageView.setVisibility(View.VISIBLE);
                 } else {
                     imageView.setVisibility(View.INVISIBLE);
-                }
+                }*/
 
-                //data.remove(position);
+                data.remove(position);
                 adapter.notifyDataSetChanged();
 
             }
         });
 
-    }/*
+
         next = (Button) view.findViewById(R.id.next);
         retake = (Button) view.findViewById(R.id.retake);
         next.setOnClickListener(new View.OnClickListener() {
