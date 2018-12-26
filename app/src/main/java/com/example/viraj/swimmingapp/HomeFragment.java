@@ -1,11 +1,13 @@
 package com.example.viraj.swimmingapp;
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -14,7 +16,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,13 +59,17 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 
 public class HomeFragment extends Fragment {
-    private ArrayList<String> data = new ArrayList<String>();
-    private ArrayList<String> images = new ArrayList<>();
+    private ArrayList<String> data1 = new ArrayList<String>();
+    private ArrayList<String> data2 = new ArrayList<String>();
+    private ArrayList<String> data3 = new ArrayList<String>();
+    ArrayList<Person> people = new ArrayList<Person>();
+    PersonAdapter pa;
 
-    ArrayAdapter<String> adapter;
+//    ArrayAdapter<String> adapter;
     private ListView lv;
     DatabaseReference df;
     private StorageReference mStorageRef;
@@ -133,7 +141,6 @@ public class HomeFragment extends Fragment {
 
 
 
-
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("Swimmers");
@@ -144,7 +151,10 @@ public class HomeFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //HashMap<String, Object> dataMap = new HashMap<String, Object>();
                 for(DataSnapshot swimmer: dataSnapshot.getChildren()){
-                    data.add(swimmer.getKey() + " " );//+ swimmer.getValue().toString());
+                    people.add(new Person(swimmer.getKey(), swimmer.child("Best Stroke").getValue() + "",
+                            swimmer.child("Age").getValue() + ""));
+                   // data1.add(swimmer.getKey() + " " );//+ swimmer.getValue().toString());
+                    //data2.add(swimmer.child("Best Stroke") + "");
                     System.out.println("has been read");
                 }
                 /*ArrayList<Integer> order = new ArrayList<>();
@@ -153,8 +163,9 @@ public class HomeFragment extends Fragment {
                 Collections.sort(order);
                 for(int a = 0; a<order.size(); a ++)
                     System.out.println("NUMBER:" + order.get(a));*/
-                Collections.sort(data);
-                adapter.notifyDataSetChanged();
+                //Collections.sort(people);
+               // adapter.notifyDataSetChanged();
+                pa.notify(people);
                 Log.d("Data set", "It has changed");
             }
 
@@ -164,33 +175,36 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        pa = new PersonAdapter(getActivity(), people);
         lv = (ListView) view.findViewById(R.id.listview);
 
         //TabHost tabHost = (TabHost) view.findViewById(android.R.id.tabhost);
 //R.layout.list_item, R.id.list_item_text
-        adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item_recycler_template, R.id.lbl_message
-                , data);
-        lv.setAdapter(adapter);
+      /*  adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item_recycler_template, R.id.lbl_message
+                , data);*/
+        lv.setAdapter(pa);
         //df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
         //df.child(ln + ", " + fn).child("Birthdate").setValue(strDate);
         //generateListContent();
 
-        adapter.notifyDataSetChanged();
-
+        //adapter.notifyDataSetChanged();
+        pa.notify(people);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+              /* AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
 
                 final View dialogView = inflater.inflate(R.layout.swimmer_times, null);
                 final EditText firstName = (EditText) dialogView.findViewById(R.id.times);
-                firstName.setEnabled(false);
-                String name1 = lv.getItemAtPosition(position).toString();
-                name1 = name1.substring(name1.indexOf(',') + 2).toLowerCase() +
+                firstName.setEnabled(false);*/
+                //String name1 = lv.getItemAtPosition(position).toString();
+                String name1 = people.get(position).getmName();
+                String tName = name1.toLowerCase();
+                name1 = name1.substring(name1.indexOf(',') + 2).toLowerCase() + " " +
                         name1.substring(0,name1.indexOf(',')).toLowerCase();
                 //name1 = "\"" + name1 + "\"";
-                System.out.println("NAMEIS:" + name1);
+            /*    System.out.println("NAMEIS:" + name1);
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 FirebaseUser user = mAuth.getCurrentUser();
                 df = FirebaseDatabase.getInstance().getReference("Swimmer Database").child(name1);
@@ -232,7 +246,29 @@ public class HomeFragment extends Fragment {
                             }
                         });
                 final AlertDialog dialog = builder.create();
-                dialog.show();
+                dialog.show();*/
+                Intent i = new Intent(getActivity(), SwimmerInformation.class);
+                i.putExtra(EXTRA_MESSAGE, name1);
+                i.putExtra("Other1", tName);
+                startActivity(i);
+
+/*
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    setEnterTransition(new Fade(Fade.IN));
+                    setEnterTransition(new Fade(Fade.OUT));
+
+                  /*  ActivityOptions options = ActivityOptions
+                            .makeSceneTransitionAnimation(this,
+                                    new Pair<View, String>(viewRoot.findViewById(R.id.lbl_date_and_time_header),
+                                            getString(R.string.))),
+
+
+                    startActivity(i);
+
+
+                } else {
+                    startActivity(i);
+                }*/
             }
         });
 
@@ -256,10 +292,12 @@ public class HomeFragment extends Fragment {
                                 System.out.println("RADIO BUTTON ID:" + rbID);
                                 String gender;
 
-                                if(rbID == 2131361976)
+                                if(rbID == R.id.radio_male)
                                     gender = "Male";
-                                else
+                                else if(rbID == R.id.radio_female)
                                     gender = "Female";
+                                else
+                                    gender = "";
                                 final Spinner strokeSpinner = (Spinner) dialogView.findViewById(R.id.spinnerBestStroke);
                                 // spinner.setPrompt("Title");
                                /* ArrayAdapter<CharSequence> strokeAdapter = ArrayAdapter.createFromResource(getActivity(),
@@ -281,8 +319,10 @@ public class HomeFragment extends Fragment {
                                 Date d = new Date(year, month, day);
                                 String strDate = dateFormatter.format(d);*/
 
-                                String fn = firstName.getText().toString();
-                                String ln = lastName.getText().toString();
+                                String fn = firstName.getText().toString().toLowerCase();
+                                fn = fn.substring(0, 1).toUpperCase() + fn.substring(1);
+                                String ln = lastName.getText().toString().toLowerCase();
+                                ln = ln.substring(0, 1).toUpperCase() + ln.substring(1);
                                 String swimmerAge = age.getText().toString();
                                 /*if(!(TextUtils.isEmpty(fn) || TextUtils.isEmpty(ln))) {
                                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
@@ -295,9 +335,11 @@ public class HomeFragment extends Fragment {
                                 df.child(ln + ", " + fn).child("Best Stroke").setValue(stroke);
 
                                 //df.setValue(ln + ", " + fn + ": " + strDate);
-                                data.add(ln + ", " + fn + ": ");
+                                //data.add(ln + ", " + fn + ": ");
+                                people.add(new Person(ln + ", " + fn + ": ", stroke, swimmerAge));
 
-                                adapter.notifyDataSetChanged();
+                               // adapter.notifyDataSetChanged();
+                                pa.notify(people);
                                 HomeFragment hf = new HomeFragment();
                                 getFragmentManager()
                                         .beginTransaction()
@@ -332,7 +374,7 @@ public class HomeFragment extends Fragment {
 
     private void generateListContent() {
         for(int i = 0; i < 3; i++) {
-            data.add("Bobs, Bob");
+            //data.add("Bobs, Bob");
         }
     }
 

@@ -4,20 +4,62 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/LightBlue"
     tools:context=".AttendanceFragment">
 
-    <TextView
-        android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:text="Click on swimmer name if present."
+        android:orientation="horizontal">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:background="@color/LightBlue"
+        android:gravity="center"
+        android:text="Absent"
         android:textSize="16dp"
         app:fontFamily="sans-serif" />
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:background="@color/LightBlue"
+            android:gravity="center"
+            android:text="Present"
+            android:textSize="16dp"
+            app:fontFamily="sans-serif" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
     <ListView
         android:id="@+id/listview"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:background="@color/LightBlue"
+        android:layout_weight="1"
+        android:dividerHeight="1dp"
         android:layout_height="400dp">
     </ListView>
+
+        <ListView
+            android:id="@+id/listviewPresent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:dividerHeight="1dp"
+            android:layout_height="400dp">
+        </ListView>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -28,14 +70,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/next"
-        android:text="Next"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:text="Save"
+        android:background="@color/colorPrimary"
         android:layout_weight="1"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         android:id="@+id/retake"
         android:text="Retake"
+        android:background="@color/colorPrimary"
         android:layout_weight="1"/>
 
     </LinearLayout>

@@ -25,10 +25,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -77,6 +80,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    ArrayAdapter specificlscSpinnerAdapter;
+
+    ArrayList<String> tempArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +131,53 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        Spinner specificlscSpinner = (Spinner) findViewById(R.id.spinnerspecificLSC);
+
+        tempArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.western_lsc_array)));
+        specificlscSpinnerAdapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_dropdown_item, tempArray);
+        specificlscSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        specificlscSpinner.setAdapter(specificlscSpinnerAdapter);
+        specificlscSpinnerAdapter.notifyDataSetChanged();
+
+        final Spinner lscSpinner = (Spinner) findViewById(R.id.spinnerLSC);
+        final ArrayAdapter lscSpinnerAdapter =
+                ArrayAdapter.createFromResource(this, R.array.lsc_array, android.R.layout.simple_spinner_dropdown_item);
+        lscSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lscSpinner.setAdapter(lscSpinnerAdapter);
+        lscSpinnerAdapter.notifyDataSetChanged();
+        //System.out.println("Value of array:" + R.array.lsc_array);
+        String[] western = getResources().getStringArray(R.array.western_lsc_array);
+        String[] central = getResources().getStringArray(R.array.central_lsc_array);
+        lscSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String item = lscSpinner.getSelectedItem().toString();
+                System.out.println("inside listener");
+                if(item.equals("Western")){System.out.println("westernin");
+                    tempArray = new ArrayList(Arrays.asList(getResources().getStringArray(R.array.western_lsc_array)));}
+                else if(item.equals("Central")){System.out.println("centralin");
+                    tempArray = new ArrayList(Arrays.asList(getResources().getStringArray(R.array.central_lsc_array)));
+                }
+                else if(item.equals("Eastern")){System.out.println("easternin");
+                    tempArray = new ArrayList(Arrays.asList(getResources().getStringArray(R.array.eastern_lsc_array)));}
+                else if(item.equals("Southern")){System.out.println("southernin");
+                    tempArray = new ArrayList(Arrays.asList(getResources().getStringArray(R.array.southern_lsc_array)));}
+                    //System.out.println("first element:" + tempArray[0]);
+                //specificlscSpinner = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_dropdown_item, tempArray);
+               // specificlscSpinnerAdapter.clear();
+               // specificlscSpinnerAdapter.notifyDataSetChanged();
+                specificlscSpinnerAdapter.clear();
+               specificlscSpinnerAdapter.addAll(tempArray);
+               specificlscSpinnerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
     }
 
     private void populateAutoComplete() {

@@ -12,13 +12,16 @@
         android:id="@+id/list_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lucida_sans_demibold_roman"
+        style="@style/Text.Primary"
+
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:layout_toEndOf="@+id/list_item_thumbnail"
         android:layout_toRightOf="@+id/list_item_thumbnail"
-        android:text="This is row number 15"
-        android:textSize="24dp"
+        android:text="15"
+        android:alpha=".86"
+        android:textColor="@color/black"
+        android:textSize="25dp"
  />
 
 </RelativeLayout>

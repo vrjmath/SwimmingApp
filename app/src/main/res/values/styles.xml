@@ -35,5 +35,10 @@
         <item name="android:color">@color/white</item>
     </style>
 
+    <style name="AppCompatTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 
 </resources>

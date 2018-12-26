@@ -18,6 +18,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/LightBlue"
     tools:context=".LaneFragment" >
 
         <LinearLayout android:layout_width="match_parent"
@@ -26,7 +27,7 @@
 
         <com.example.viraj.swimmingapp.DynamicListView
             android:id="@+id/scrollview1"
-            android:background="#0000"
+            android:background="@color/LightBlue"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_weight="1"/>
@@ -36,11 +37,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 </ListView> -->
-                <Button
+        <!--        <Button
                     android:id="@+id/next"
                     android:text="NEXT"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content" /> -->
+                <Button
+                    android:id="@+id/next"
+                    android:background="@color/colorPrimary"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+
+                    android:text="Make Lanes"/>
         </LinearLayout>
 
 

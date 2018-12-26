@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +33,9 @@ import java.util.ArrayList;
 public class AttendanceFragment extends Fragment {
 
     private ArrayList<String> data = new ArrayList<String>();
+    private ArrayList<String> presentData = new ArrayList<String>();
     ArrayAdapter<String> adapter;
+    ArrayAdapter<String> presentAdapter;
     Button next;
     Button retake;
 
@@ -54,22 +57,26 @@ public class AttendanceFragment extends Fragment {
         names = new ArrayList<>();
         present = new ArrayList<>();
         allNames = new ArrayList<>();
+
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
+        read();
+
         df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("Swimmers");
-        //df.child(ln + ", " + fn).child("Birthdate").setValue(strDate);
-        //df =
         df.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //HashMap<String, Object> dataMap = new HashMap<String, Object>();
                 for (DataSnapshot swimmer : dataSnapshot.getChildren()) {
                     String t = swimmer.getKey() + " ";
-                    data.add(t);//+ swimmer.getValue().toString());
+                    boolean in = false;
+                    for(int a = 0; a<presentData.size(); a++){
+                        if(presentData.get(a).equals(t)){in = true;}
+                    }
+                    if(in == false)
+                    data.add(t);
+
                     allNames.add(t);
-                    System.out.println("has been read");
                 }
-                //Collections.sort(data);
                 adapter.notifyDataSetChanged();
                 Log.d("Data set", "It has changed");
             }
@@ -83,6 +90,11 @@ public class AttendanceFragment extends Fragment {
 
 
         final ListView lv = (ListView) view.findViewById(R.id.listview);
+        final ListView plv = (ListView) view.findViewById(R.id.listviewPresent);
+        presentAdapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item_swimmer_time, R.id.list_item_text, presentData);
+        plv.setAdapter(presentAdapter);
+
+        presentAdapter.notifyDataSetChanged();
 
         adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item_swimmer_time, R.id.list_item_text, data);
         lv.setAdapter(adapter);
@@ -95,6 +107,9 @@ public class AttendanceFragment extends Fragment {
                 x++;
                 String temp = data.get(position);
                 present.add(temp);
+                presentData.add(temp);
+                for(int x = 0; x < presentData.size(); x++)
+                    System.out.println("Present data" + x + ":" + presentData.get(x));
                // lv.getItemAtPosition(position);
 
               /*  ImageView imageView = (ImageView) view.findViewById(R.id.check_mark);
@@ -107,9 +122,18 @@ public class AttendanceFragment extends Fragment {
 
                 data.remove(position);
                 adapter.notifyDataSetChanged();
+                presentAdapter.notifyDataSetChanged();
 
             }
         });
+
+        plv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
 
 
         next = (Button) view.findViewById(R.id.next);
@@ -126,7 +150,9 @@ public class AttendanceFragment extends Fragment {
                 for(int a = 0; a< present.size(); a ++)
                 df2.child(present.get(a)).child("A").setValue("");
 
-                PracticeFragment sf = new PracticeFragment();
+                Toast.makeText(getActivity(),
+                        "Saved", Toast.LENGTH_LONG).show();
+               /* PracticeFragment sf = new PracticeFragment();
                 //Bundle bundle = new Bundle();
                 //bundle.putStringArrayList("attendance", present);
                 //bundle.putString("SetName", inputBundle.getString("SetName"));
@@ -134,7 +160,7 @@ public class AttendanceFragment extends Fragment {
                 getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.screen_area, sf)
-                        .commit();
+                        .commit();*/
             }
         });
 
@@ -145,6 +171,8 @@ public class AttendanceFragment extends Fragment {
                 for(int e = 0; e < allNames.size(); e++){
                     data.add(allNames.get(e));
                 }
+                presentData.clear();
+                presentAdapter.notifyDataSetChanged();
                 adapter.notifyDataSetChanged();
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 FirebaseUser user = mAuth.getCurrentUser();
@@ -170,4 +198,26 @@ public class AttendanceFragment extends Fragment {
 
                 return super.onOptionsItemSelected(item);
             }*/
+
+      public void read() {
+          FirebaseAuth mAuth = FirebaseAuth.getInstance();
+          FirebaseUser user = mAuth.getCurrentUser();
+          DatabaseReference df1 =
+                  FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("Attendance");
+          df1.addListenerForSingleValueEvent(new ValueEventListener() {
+              @Override
+              public void onDataChange(DataSnapshot dataSnapshot) {
+                  for (DataSnapshot swimmer : dataSnapshot.getChildren()) {
+                      presentData.add(swimmer.getKey());
+                  }
+                  presentAdapter.notifyDataSetChanged();
+              }
+
+              @Override
+              public void onCancelled(DatabaseError databaseError) {
+
+              }
+          });
+
+      }
     }

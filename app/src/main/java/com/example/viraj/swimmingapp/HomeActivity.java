@@ -63,6 +63,7 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -93,7 +94,7 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
         }
     }
 
@@ -168,6 +169,8 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
             HomeActivity.this.startActivity(intent);
 
+        } else if(id == R.id.about_us) {
+
         }
 
 
@@ -211,4 +214,6 @@ public class HomeActivity extends AppCompatActivity
 
         }
     }
+
+
 }

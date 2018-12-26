@@ -33,6 +33,7 @@ public class LaneFragment extends Fragment {
     private ObservableScrollView scrollView2 = null;
     DatabaseReference df3;
     Bundle inputBundle;
+     String type;
 
     ArrayList<String> mCheeseList;
     ArrayAdapter<String> adapter;
@@ -58,6 +59,8 @@ public class LaneFragment extends Fragment {
          event = inputBundle.getString("Stroke");
         String temp = inputBundle.getString("Distance");
         String pool = inputBundle.getString("Pool");
+        final String order = inputBundle.getString("Order");
+        type = inputBundle.getString("Type");
         String poolAcr = "";
         final String numL = inputBundle.getString("Lanes");
         if (event.equals("Freestyle")) {
@@ -68,7 +71,7 @@ public class LaneFragment extends Fragment {
             event = "Breast";
         } else if (event.equals("Butterfly")) {
             event = "Fly";
-        } else if (event.equals("I.M.")) {
+        } else if (event.equals("IM")) {
             event = "IM";
         }
         if (pool.equals("Short Course Yards")) {
@@ -86,7 +89,6 @@ public class LaneFragment extends Fragment {
 
         FirebaseAuth mAuth1 = FirebaseAuth.getInstance();
         FirebaseUser user1 = mAuth1.getCurrentUser();
-
 
         df3 = FirebaseDatabase.getInstance().getReference("Users").child(user1.getUid()).child("Attendance");
         df3.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -124,6 +126,8 @@ public class LaneFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("Lanes", numL);
                 bundle.putStringArrayList("Order", mCheeseList );
+                bundle.putString("OrderPool", order);
+                bundle.putString("Type", type);
                 hldf.setArguments(bundle);
                 getFragmentManager()
                         .beginTransaction()
@@ -189,10 +193,10 @@ public class LaneFragment extends Fragment {
 
     public void compare() {
         //System.out.println("PRESENTIS:" + present.get(0));
-        System.out.println("IN HERE");
-        System.out.println("SIZE:" + present.size());
-        for (int x = 0; x < present.size(); x++)
-            System.out.println("NAMEIS:" + present.get(x));
+       // System.out.println("IN HERE");
+        //System.out.println("SIZE:" + present.size());
+      //  for (int x = 0; x < present.size(); x++)
+        //    System.out.println("NAMEIS:" + present.get(x));
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();

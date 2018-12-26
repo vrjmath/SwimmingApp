@@ -8,7 +8,7 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#80D8FF</color>-->
     <color name="colorWindowBackground">#121212</color>
-
+ <color name="colorTransparentBlack">#52000000</color>
     <color name ="white">#FFF</color>
     <color name="ryanscolor">#006994</color>
     <color name="tooMuchBlue">#003348</color>

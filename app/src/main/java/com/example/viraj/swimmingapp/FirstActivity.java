@@ -13,6 +13,16 @@ public class FirstActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
         getSupportActionBar().hide();
+        System.out.println("First Activity:" + SaveSharedPreference.getUserName(FirstActivity.this));
+        if(SaveSharedPreference.getUserName(FirstActivity.this).length() != 0)
+        {
+            startActivity(new Intent(FirstActivity.this, HomeActivity.class));
+            // call Login Activity
+        }
+        else
+        {
+            // Stay at the current activity.
+        }
 
         Button mLogIn = (Button) findViewById(R.id.button2);
         mLogIn.setOnClickListener(new View.OnClickListener() {
