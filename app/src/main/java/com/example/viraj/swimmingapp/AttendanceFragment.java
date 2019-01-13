@@ -32,15 +32,15 @@ import java.util.ArrayList;
 
 public class AttendanceFragment extends Fragment {
 
-    private ArrayList<String> data = new ArrayList<String>();
+    private ArrayList<String> absentData = new ArrayList<String>();
     private ArrayList<String> presentData = new ArrayList<String>();
-    ArrayAdapter<String> adapter;
+    ArrayAdapter<String> absentAdapter;
     ArrayAdapter<String> presentAdapter;
-    Button next;
+    Button save;
     Button retake;
 
     int x;
-    ArrayList<String> names;
+    ArrayList<String> absent;
     ArrayList<String> present;
     Bundle inputBundle;
     DatabaseReference df;
@@ -54,7 +54,7 @@ public class AttendanceFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        names = new ArrayList<>();
+        absent = new ArrayList<>();
         present = new ArrayList<>();
         allNames = new ArrayList<>();
 
@@ -73,11 +73,11 @@ public class AttendanceFragment extends Fragment {
                         if(presentData.get(a).equals(t)){in = true;}
                     }
                     if(in == false)
-                    data.add(t);
+                    absentData.add(t);
 
                     allNames.add(t);
                 }
-                adapter.notifyDataSetChanged();
+                absentAdapter.notifyDataSetChanged();
                 Log.d("Data set", "It has changed");
             }
 
@@ -96,32 +96,21 @@ public class AttendanceFragment extends Fragment {
 
         presentAdapter.notifyDataSetChanged();
 
-        adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item_swimmer_time, R.id.list_item_text, data);
-        lv.setAdapter(adapter);
+        absentAdapter = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item_swimmer_time, R.id.list_item_text, absentData);
+        lv.setAdapter(absentAdapter);
 
-        adapter.notifyDataSetChanged();
+        absentAdapter.notifyDataSetChanged();
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 x++;
-                String temp = data.get(position);
+                String temp = absentData.get(position);
                 present.add(temp);
                 presentData.add(temp);
-                for(int x = 0; x < presentData.size(); x++)
-                    System.out.println("Present data" + x + ":" + presentData.get(x));
-               // lv.getItemAtPosition(position);
 
-              /*  ImageView imageView = (ImageView) view.findViewById(R.id.check_mark);
-                System.out.println("IMAGEVIEW:" + imageView);
-                if (imageView.getVisibility() == View.INVISIBLE) {
-                    imageView.setVisibility(View.VISIBLE);
-                } else {
-                    imageView.setVisibility(View.INVISIBLE);
-                }*/
-
-                data.remove(position);
-                adapter.notifyDataSetChanged();
+                absentData.remove(position);
+                absentAdapter.notifyDataSetChanged();
                 presentAdapter.notifyDataSetChanged();
 
             }
@@ -130,50 +119,63 @@ public class AttendanceFragment extends Fragment {
         plv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                x++;
+               String temp = presentData.get(position);
+                absent.add(temp);
+                absentData.add(temp);
 
-            }
-        });
+                presentData.remove(position);
 
-
-
-        next = (Button) view.findViewById(R.id.next);
-        retake = (Button) view.findViewById(R.id.retake);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //inputBundle = getArguments();
+                System.out.println("");
+                for(int a = 0; a < presentData.size(); a ++){
+                    System.out.println("name:" + presentData.get(a));
+                }
 
                 FirebaseAuth mAuth1 = FirebaseAuth.getInstance();
                 FirebaseUser user1 = mAuth1.getCurrentUser();
 
                 df2 = FirebaseDatabase.getInstance().getReference("Users").child(user1.getUid()).child("Attendance");
-                for(int a = 0; a< present.size(); a ++)
-                df2.child(present.get(a)).child("A").setValue("");
+                df2.child(temp).setValue(null);
+
+                absentAdapter.notifyDataSetChanged();
+                presentAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+
+        save = (Button) view.findViewById(R.id.save);
+        retake = (Button) view.findViewById(R.id.retake);
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                FirebaseAuth mAuth1 = FirebaseAuth.getInstance();
+                FirebaseUser user1 = mAuth1.getCurrentUser();
+
+                df2 = FirebaseDatabase.getInstance().getReference("Users").child(user1.getUid()).child("Attendance");
+               df2.setValue(null);
+                for(int a = 0; a< presentData.size(); a ++){
+                    //System.out.println("In present goes:" + present.get(a));
+                df2.child(presentData.get(a)).child("A").setValue("");}
 
                 Toast.makeText(getActivity(),
                         "Saved", Toast.LENGTH_LONG).show();
-               /* PracticeFragment sf = new PracticeFragment();
-                //Bundle bundle = new Bundle();
-                //bundle.putStringArrayList("attendance", present);
-                //bundle.putString("SetName", inputBundle.getString("SetName"));
-                //sf.setArguments(bundle);
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.screen_area, sf)
-                        .commit();*/
             }
         });
 
         retake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                data.clear();
+                absentData.clear();
                 for(int e = 0; e < allNames.size(); e++){
-                    data.add(allNames.get(e));
+                    absentData.add(allNames.get(e));
                 }
                 presentData.clear();
                 presentAdapter.notifyDataSetChanged();
-                adapter.notifyDataSetChanged();
+                absentAdapter.notifyDataSetChanged();
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 FirebaseUser user = mAuth.getCurrentUser();
                 df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("Attendance");
@@ -184,20 +186,7 @@ public class AttendanceFragment extends Fragment {
     }
 
 
-      /*      @Override
-            public boolean onOptionsItemSelected(MenuItem item) {
-                // Handle action bar item clicks here. The action bar will
-                // automatically handle clicks on the Home/Up button, so long
-                // as you specify a parent activity in AndroidManifest.xml.
-                int id = item.getItemId();
 
-                //noinspection SimplifiableIfStatement
-                if (id == R.id.action_settings) {
-                    return true;
-                }
-
-                return super.onOptionsItemSelected(item);
-            }*/
 
       public void read() {
           FirebaseAuth mAuth = FirebaseAuth.getInstance();

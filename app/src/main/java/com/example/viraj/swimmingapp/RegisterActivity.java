@@ -78,8 +78,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private EditText teamName;
     private View mProgressView;
     private View mLoginFormView;
+
+    Spinner specificlscSpinner;
+    Spinner lscSpinner;
 
     ArrayAdapter specificlscSpinnerAdapter;
 
@@ -92,6 +96,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         getSupportActionBar().hide();
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.inputEmailSignUp);
+        teamName = (EditText) findViewById(R.id.teamname);
         populateAutoComplete();
 
         mAuth = FirebaseAuth.getInstance();
@@ -132,7 +137,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        Spinner specificlscSpinner = (Spinner) findViewById(R.id.spinnerspecificLSC);
+         specificlscSpinner = (Spinner) findViewById(R.id.spinnerspecificLSC);
 
         tempArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.western_lsc_array)));
         specificlscSpinnerAdapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_dropdown_item, tempArray);
@@ -140,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         specificlscSpinner.setAdapter(specificlscSpinnerAdapter);
         specificlscSpinnerAdapter.notifyDataSetChanged();
 
-        final Spinner lscSpinner = (Spinner) findViewById(R.id.spinnerLSC);
+        lscSpinner = (Spinner) findViewById(R.id.spinnerLSC);
         final ArrayAdapter lscSpinnerAdapter =
                 ArrayAdapter.createFromResource(this, R.array.lsc_array, android.R.layout.simple_spinner_dropdown_item);
         lscSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -302,6 +307,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
                                     ref.child(user.getUid()).setValue(user.getUid());
+                                    DatabaseReference df = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("Information");
+                                    String a = specificlscSpinner.getSelectedItem().toString();
+                                    df.child("LSC").setValue(a);
+                                    String b = teamName.getText().toString();
+                                    df.child("Team").setValue(b);
 
                                     Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                                     RegisterActivity.this.startActivity(intent);

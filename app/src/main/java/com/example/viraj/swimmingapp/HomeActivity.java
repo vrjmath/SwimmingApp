@@ -3,9 +3,11 @@ package com.example.viraj.swimmingapp;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -166,10 +168,21 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
             FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            Intent intent = new Intent(HomeActivity.this, FirstActivity.class);
             HomeActivity.this.startActivity(intent);
 
         } else if(id == R.id.about_us) {
+            String urlString = "https://swimsharktech.com/about-us.html";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setPackage("com.android.chrome");
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException ex) {
+                // Chrome browser presumably not installed so allow user to choose instead
+                intent.setPackage(null);
+                startActivity(intent);
+            }
 
         }
 

@@ -73,13 +73,18 @@ public class LaneFragment extends Fragment {
             event = "Fly";
         } else if (event.equals("IM")) {
             event = "IM";
-        }
+        } else if (event.equals("Best Stroke"))
+            event = "Best Stroke";
         if (pool.equals("Short Course Yards")) {
             poolAcr = "Yd";
         } else if (pool.equals("Long Course Meters")) {
             poolAcr = "M";
         }
-        event = "\"" + temp + " " + poolAcr + " " + event + "\"";
+        if(event.equals("Best Stroke")){
+            event = temp + " " + poolAcr + " " + event;
+        }
+        else{
+        event = "\"" + temp + " " + poolAcr + " " + event + "\"";}
         //"\"100 M Free\""
 
         v = view;

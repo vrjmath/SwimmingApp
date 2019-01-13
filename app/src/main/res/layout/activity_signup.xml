@@ -122,12 +122,34 @@
             android:textColor="@color/LightBlue"
             android:textSize="16dp" />
     </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/teamnamebox"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="200dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/opaqueBackground"
+        app:layout_constraintEnd_toEndOf="@+id/opaqueBackground"
+        app:layout_constraintStart_toStartOf="@+id/opaqueBackground"
+        app:layout_constraintTop_toBottomOf="@+id/teamNameSignIn">
+        <EditText
+            android:id="@+id/teamname"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:hint="Team Name"
+            android:textColor="@color/LightBlue"
+            android:textSize="16dp" />
+    </android.support.design.widget.TextInputLayout>
 
     <Spinner
         android:id="@+id/spinnerLSC"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="140dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -138,13 +160,13 @@
         app:layout_constraintBottom_toBottomOf="@+id/opaqueBackground"
         app:layout_constraintEnd_toEndOf="@+id/opaqueBackground"
         app:layout_constraintStart_toStartOf="@+id/opaqueBackground"
-        app:layout_constraintTop_toBottomOf="@+id/teamNameSignIn"/>
+        app:layout_constraintTop_toBottomOf="@+id/teamnamebox"/>
 
     <Spinner
         android:id="@+id/spinnerspecificLSC"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"

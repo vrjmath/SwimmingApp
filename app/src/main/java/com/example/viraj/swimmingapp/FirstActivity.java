@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class FirstActivity extends AppCompatActivity {
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,11 +20,13 @@ public class FirstActivity extends AppCompatActivity {
         System.out.println("First Activity:" + SaveSharedPreference.getUserName(FirstActivity.this));
         if(SaveSharedPreference.getUserName(FirstActivity.this).length() != 0)
         {
+            System.out.println("not equal to 0");
             startActivity(new Intent(FirstActivity.this, HomeActivity.class));
             // call Login Activity
         }
         else
         {
+            System.out.println("equal to 0");
             // Stay at the current activity.
         }
 
@@ -39,5 +45,20 @@ public class FirstActivity extends AppCompatActivity {
                 startActivity(new Intent(FirstActivity.this, RegisterActivity.class));
             }
         });
+    }
+
+    public void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        System.out.println("CurrentUser" + currentUser.getEmail());
+
+        if(currentUser != null) {
+            Intent intent = new Intent(FirstActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            FirstActivity.this.startActivity(intent);
+            finish();
+        }
+        //updateUI(currentUser);
     }
 }
