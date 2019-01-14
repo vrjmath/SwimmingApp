@@ -171,6 +171,19 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(HomeActivity.this, FirstActivity.class);
             HomeActivity.this.startActivity(intent);
 
+        } else if(id == R.id.privacy_policy) {
+            String urlString = "https://swimsharktech.com/privacy_policy.html";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setPackage("com.android.chrome");
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException ex) {
+                // Chrome browser presumably not installed so allow user to choose instead
+                intent.setPackage(null);
+                startActivity(intent);
+            }
+
         } else if(id == R.id.about_us) {
             String urlString = "https://swimsharktech.com/about-us.html";
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));

@@ -40,8 +40,8 @@ public class AttendanceFragment extends Fragment {
     Button retake;
 
     int x;
-    ArrayList<String> absent;
-    ArrayList<String> present;
+    //ArrayList<String> absent;
+    //ArrayList<String> present;
     Bundle inputBundle;
     DatabaseReference df;
     DatabaseReference df2;
@@ -54,8 +54,8 @@ public class AttendanceFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        absent = new ArrayList<>();
-        present = new ArrayList<>();
+        //absent = new ArrayList<>();
+       // present = new ArrayList<>();
         allNames = new ArrayList<>();
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -106,7 +106,7 @@ public class AttendanceFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 x++;
                 String temp = absentData.get(position);
-                present.add(temp);
+                //present.add(temp);
                 presentData.add(temp);
 
                 absentData.remove(position);
@@ -121,7 +121,7 @@ public class AttendanceFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 x++;
                String temp = presentData.get(position);
-                absent.add(temp);
+                //absent.add(temp);
                 absentData.add(temp);
 
                 presentData.remove(position);
