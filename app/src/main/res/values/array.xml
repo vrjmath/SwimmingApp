@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="distance_array">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>400</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+
+    <string-array name="stroke_array">
+        <item>Freestyle</item>
+        <item>Backstroke</item>
+        <item>Breastroke</item>
+        <item>Butterfly</item>
+        <item>IM</item>
+        <item>Best Stroke</item>
+    </string-array>
+
+    <string-array name="best_stroke_array">
+        <item>Freestyle</item>
+        <item>Backstroke</item>
+        <item>Breastroke</item>
+        <item>Butterfly</item>
+        <item>IM</item>
+    </string-array>
+
+    <string-array name="pool_array">
+        <item>Short Course Yards</item>
+        <item>Long Course Meters</item>
+    </string-array>
+
+    <string-array name="lanes_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="order_array">
+        <item>Heats</item>
+        <item>Lanes</item>
+    </string-array>
+
+    <string-array name="type_array">
+        <item>Regular</item>
+        <item>Meet</item>
+    </string-array>
+
+
+
+    <string-array name="attendance_array">
+        <item>Edit Attendance</item>
+        <item>Use Current Attendance</item>
+    </string-array>
+
+    <string-array name="lsc_array">
+        <item>Western</item>
+        <item>Central</item>
+        <item>Eastern</item>
+        <item>Southern</item>
+    </string-array>
+
+    <string-array name="western_lsc_array">
+        <item>Alaska</item>
+        <item>Arizona</item>
+        <item>Central California</item>
+        <item>Colorado</item>
+        <item>Hawaiian</item>
+        <item>Inland Empire</item>
+        <item>Montana</item>
+        <item>New Mexico</item>
+        <item>Oregon</item>
+        <item>Pacific</item>
+        <item>Pacific Northwest</item>
+        <item>San Diego-Imperial</item>
+        <item>Sierra Nevada</item>
+        <item>Snake River</item>
+        <item>Southern California</item>
+        <item>Utah</item>
+        <item>Wyoming</item>
+
+    </string-array>
+
+    <string-array name="central_lsc_array">
+        <item>Arkansas</item>
+        <item>Illinois</item>
+        <item>Indiana</item>
+        <item>Iowa</item>
+        <item>Lake Erie</item>
+        <item>Michigan</item>
+        <item>Midwestern</item>
+        <item>Minnesota</item>
+        <item>Missouri Valley</item>
+        <item>North Dakota</item>
+        <item>Ohio</item>
+        <item>Oklahoma</item>
+        <item>Ozark</item>
+        <item>South Dakota</item>
+        <item>Wisconsin</item>
+    </string-array>
+
+    <string-array name="eastern_lsc_array">
+        <item>Adirondack</item>
+        <item>Allegheny Mountain</item>
+        <item>Connecticut</item>
+        <item>Maine</item>
+        <item>Maryland</item>
+        <item>Metropolitan</item>
+        <item>Middle Atlantic</item>
+        <item>New England</item>
+        <item>New Jersey</item>
+        <item>Niagara</item>
+        <item>Potomac Valley</item>
+        <item>Virginia</item>
+    </string-array>
+
+    <string-array name="southern_lsc_array">
+        <item>Border</item>
+        <item>Florida</item>
+        <item>Georgia</item>
+        <item>Gulf</item>
+        <item>Kentucky</item>
+        <item>Lousiana</item>
+        <item>Mississippi</item>
+        <item>North Carolina</item>
+        <item>North Texas</item>
+        <item>South Carolina</item>
+        <item>South Texas</item>
+        <item>Southeastern</item>
+        <item>West Texas</item>
+        <item>West Virginia</item>
+    </string-array>
+
+</resources>
