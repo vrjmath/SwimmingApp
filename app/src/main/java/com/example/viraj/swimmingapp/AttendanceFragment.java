@@ -182,10 +182,7 @@ public class AttendanceFragment extends Fragment {
                 df.setValue(null);
             }
         });
-
     }
-
-
 
 
       public void read() {
