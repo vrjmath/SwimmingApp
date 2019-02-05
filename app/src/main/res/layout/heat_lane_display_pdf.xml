@@ -11,6 +11,10 @@
         android:background="@android:color/white"
         android:scaleType="fitCenter"/>
 
+
+
+
+
     <EditText
         android:id="@+id/pdf_content"
         android:layout_height="100dp"
