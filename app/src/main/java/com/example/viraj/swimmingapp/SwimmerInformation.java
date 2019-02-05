@@ -3,6 +3,7 @@ package com.example.viraj.swimmingapp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -78,6 +79,7 @@ public class SwimmerInformation extends AppCompatActivity {
 
         nameText.setText(tempName);
         final EditText info = (EditText) findViewById(R.id.lbl_message_body);
+        info.setTypeface(Typeface.MONOSPACE);
         sv = (ScrollView) findViewById(R.id.scroll);
         info.setEnabled(false);
 
@@ -173,7 +175,16 @@ public class SwimmerInformation extends AppCompatActivity {
                 for(int a = 0; a < events.size(); a ++){
                     if(databaseTimes.get(a).equals("")){}
                     else{
-                        info.append(events.get(a) + " " + databaseTimes.get(a) + "\n");
+                        String event = events.get(a);
+                        //String event = events.get(a);
+                        String printStatement = String.format("%-4s%-3s %-12s%8s",event.substring(0,event.indexOf(" ")),
+                                event.substring(event.indexOf(" "),event.lastIndexOf(" ")),
+                                event.substring(event.lastIndexOf(" ")+1),databaseTimes.get(a)) + "\n";
+
+                        //String printStatement = String.format("%-20s %-10s", events.get(a), databaseTimes.get(a)) + "\n";
+                        /*String printStatement =  String.format("%-15s", events.get(a)) +
+                                String.format("%10s", databaseTimes.get(a)) + "\n";*/
+                        info.append(printStatement);
 
                         sv.post(new Runnable() {
                             @Override

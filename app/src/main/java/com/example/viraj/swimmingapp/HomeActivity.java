@@ -197,6 +197,24 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(intent);
             }
 
+        } else if(id == R.id.request) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Requesting to update the database will update your added/edited swimmers and " +
+                    "the lane maker.");
+        // Add the buttons
+            builder.setPositiveButton("Request", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
 

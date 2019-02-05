@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -53,7 +55,7 @@ public class AttendanceFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_attendance, container, false);
     }
 
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         //absent = new ArrayList<>();
        // present = new ArrayList<>();
         allNames = new ArrayList<>();
@@ -151,9 +153,12 @@ public class AttendanceFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-
+                /*Animation slide_down = AnimationUtils.loadAnimation(getContext(),
+                        R.anim.slide_down);*/
+                //view.startAnimation(slide_down);
                 FirebaseAuth mAuth1 = FirebaseAuth.getInstance();
                 FirebaseUser user1 = mAuth1.getCurrentUser();
+
 
                 df2 = FirebaseDatabase.getInstance().getReference("Users").child(user1.getUid()).child("Attendance");
                df2.setValue(null);

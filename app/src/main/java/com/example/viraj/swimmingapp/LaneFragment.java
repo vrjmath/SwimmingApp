@@ -133,6 +133,7 @@ public class LaneFragment extends Fragment {
                 bundle.putStringArrayList("Order", mCheeseList );
                 bundle.putString("OrderPool", order);
                 bundle.putString("Type", type);
+                bundle.putString("Event", event);
                 hldf.setArguments(bundle);
                 getFragmentManager()
                         .beginTransaction()
