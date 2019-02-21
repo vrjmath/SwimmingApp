@@ -13,15 +13,4 @@
 
 
 
-
-
-    <EditText
-        android:id="@+id/pdf_content"
-        android:layout_height="100dp"
-        android:layout_width="30dp"
-        android:gravity="top"
-        android:hint="Enter content"
-        android:lineSpacingExtra="4dp"
-        android:lines="15"/>
-
 </android.support.constraint.ConstraintLayout>
