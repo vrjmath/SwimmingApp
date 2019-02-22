@@ -101,7 +101,6 @@ public class LaneFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot swimmer : dataSnapshot.getChildren()) {
-                    System.out.println("It made it");
                     present.add(swimmer.getKey().toString() + "");//+ swimmer.getValue().toString());
                 }
                 compare();
@@ -109,7 +108,7 @@ public class LaneFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("It did not make it");
+
 
             }
         });

@@ -102,7 +102,7 @@ public class PracticeFragment extends Fragment{
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 //Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
                 distance = item;
-                System.out.println("Itemis:" + item);
+               // System.out.println("Itemis:" + item);
             }
         });
 
@@ -370,7 +370,7 @@ public class PracticeFragment extends Fragment{
 
     @Override
     public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
-        System.out.println("CALLED!!!");
+       // System.out.println("CALLED!!!");
         inflater.inflate(R.menu.menu_item, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);

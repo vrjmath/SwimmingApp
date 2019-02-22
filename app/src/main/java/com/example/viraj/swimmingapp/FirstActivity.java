@@ -61,4 +61,8 @@ public class FirstActivity extends AppCompatActivity {
         }
         //updateUI(currentUser);
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

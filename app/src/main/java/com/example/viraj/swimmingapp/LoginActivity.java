@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin(1);
+                    attemptLogin(2);
                     return true;
                 }
                 return false;
@@ -108,6 +108,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 attemptLogin(2);
             }
         });
+
+
         /*
        Button mRegisterButton = (Button) findViewById(R.id.email_sign_up_button);
         mRegisterButton.setOnClickListener(new OnClickListener() {

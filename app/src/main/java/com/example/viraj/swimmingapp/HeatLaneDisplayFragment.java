@@ -87,6 +87,7 @@ public class HeatLaneDisplayFragment extends Fragment {
     String pdfText = "";
     String event;
     String eventPath;
+    String[][] regArr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -164,7 +165,40 @@ public class HeatLaneDisplayFragment extends Fragment {
                 final View dialogView = inflater.inflate(R.layout.heat_lane_display_pdf, null);
 
                 /*order array contains the order of swimmers currently being printed */
-                String[][] hL = circleSeeder(order, numLanes);
+
+
+                ArrayList<String> swimmers = new ArrayList<>();
+
+
+                String[][] hL;
+
+              //  System.out.println("Circle seeder method has been called");
+               // System.out.println("heat is:" + hL[0][0]);
+                //printHeatLanes(hL);
+
+                if(type.equals("Meet")) {
+
+                    for(int x = 0; x < order.size(); x ++)
+                        swimmers.add(order.get(x));
+
+                hL = circleSeeder(swimmers, numLanes);
+                }
+                else {
+                    hL = regArr;
+                    if (orderPool.equals("Lanes")) {
+                    } else
+                        hL = transposeMatrix(hL);
+                }
+
+
+                /*for(int x = 0; x < regArr.length; x ++) {
+                    for (int y = 0; y < regArr[0].length; y++) {
+                        System.out.print("Num:" + regArr[x][y]);
+                    }
+                    System.out.println();
+                }
+                System.out.println("Lenght is:" + regArr.length);*/
+
 
                 pdfText += "\n" + new Date().toString() + "\n\n          ";
                 if (numLanes >= hL[0].length) {
@@ -222,65 +256,65 @@ public class HeatLaneDisplayFragment extends Fragment {
     public HashMap<String, List<String>> getData() {
         HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
         inputBundle = getArguments();
-        System.out.println("Input:" + inputBundle.getString("Lanes"));
+       // System.out.println("Input:" + inputBundle.getString("Lanes"));
         numLanes = Integer.parseInt(inputBundle.getString("Lanes"));
         order = inputBundle.getStringArrayList("Order");
         orderPool = inputBundle.getString("OrderPool");
         type = inputBundle.getString("Type");
         event = inputBundle.getString("Event");
-        //setHeatLane(order);
-        for (int x = 0; x < order.size(); x++)
-            System.out.print(order.get(x) + ", ");
-        //ArrayList<String> swimmers = new ArrayList<String>();
-        /*swimmers.addAll(Arrays.asList("ryan ng", "sumer hajela", "bryan ku",
-                "jason kim", "brandon fung", "michael cheng", "boris strots",
-                "taesu yim", "nilay kundu", "cara lee", "mei matsumoto",
-                "alice cheng", "lei otsuka", "casey tsai", "ivy li",
-                "jane choi", "patricia saito", "neeti badve", "jinsu yim",
-                "iris dong", "isabel lee", "sherry lin", "olivia candelaria",
-                "jacqueleine liu", "lukas peng", "viraj shitole", "iris yuh"));*/
+
+
+
+
+        /*Initalize array for regular seeding to be used in PDF*/
+        double numHeats = (double) order.size() / numLanes;
+        if (order.size() % numLanes != 0)
+            numHeats += 1;
+        else if (order.size() <= numLanes)
+            numHeats = 1;
+        regArr = new String[numLanes][(int) numHeats];
 
         if (type.equals("Regular")) {
             if (orderPool.equals("Heats")) {
                 for (int x = 0; x < order.size(); x++) {
                     if (x % numLanes == 0) {
-                        System.out.println("XIS:" + x);
+                        int heatNum = x / numLanes + 1;
                         List<String> heat = new ArrayList<String>();
                         for (int a = 0; a < numLanes; a++) {
                             int lane = a + 1;
                             try {
+                                regArr[a][heatNum] = order.get(x+a);
                                 heat.add(lane + " " + order.get(x + a));
                             } catch (Exception e) {
                             }
                         }
-//                System.out.println("NAMES:" + heat.get(0) + heat.get(1));
-                        int heatNum = x / numLanes + 1;
-                        System.out.println("heatNum:" + heatNum);
+
                         expandableListDetail.put("Heat " + heatNum, heat);
                     }
                 }
+
+                regArr = transposeMatrix(regArr);
             } else if (orderPool.equals("Lanes")) {
                 boolean in = false;
                 for (int a = 1; a <= numLanes; a++) {
                     if (a == numLanes) {
                         in = true;
                     }
-                    System.out.println("beforeA:" + a);
                     List<String> lane = new ArrayList<String>();
                     for (int x = 1; x <= order.size(); x++) {
                         if (in == true) {
                             if (x % numLanes == 0) {
-                                System.out.println("XXXX:" + x + "A:" + a + "NumLanes:" + numLanes + "Order" + order.get(x - 1));
                                 int heat = x / numLanes;
                                 try {
+                                    regArr[a-1][heat] = order.get(x-1);
                                     lane.add(heat + " " + order.get(x - 1));
                                 } catch (Exception e) {
                                 }
                             }
                         } else if (x % numLanes == a) {
-                            System.out.println("XXXX:" + x + "A:" + a + "NumLanes:" + numLanes + "Order" + order.get(x - 1));
                             int heat = x / numLanes + 1;
                             try {
+                                regArr[a-1][heat] = order.get(x-1);
                                 lane.add(heat + " " + order.get(x - 1));
                             } catch (Exception e) {
                             }
@@ -291,7 +325,14 @@ public class HeatLaneDisplayFragment extends Fragment {
             }
 
         } else if (type.equals("Meet")) {
-            String[][] arr = circleSeeder(order, numLanes);
+            System.out.println("Order get 0 before cirlce seeder called:" + order.get(0));
+            ArrayList<String> swimmers = new ArrayList<>();
+
+            for(int x = 0; x < order.size(); x ++)
+                swimmers.add(order.get(x));
+
+            String[][] arr = circleSeeder(swimmers, numLanes);
+            System.out.println("Order get 0:" + order.get(0));
             if (orderPool.equals("Heats"))
                 arr = transposeMatrix(arr);
 
@@ -394,12 +435,14 @@ public class HeatLaneDisplayFragment extends Fragment {
      * @return 2D array containing lane x heat for swimmers.
      */
     public String[][] circleSeeder(ArrayList<String> swimmers, int numLanes) {
+
         double numHeats = (double) swimmers.size() / numLanes;
         if (swimmers.size() % numLanes != 0)
             numHeats += 1;
         else if (swimmers.size() <= numLanes)
             numHeats = 1;
         String[][] heatLanes = new String[numLanes][(int) numHeats];
+        System.out.println("Inside circle seeder order get 0 (1):" + order.get(0));
         if (numLanes % 2 != 0) //odd lane case
         {
             for (int heatIndex = 0; heatIndex < (int) numHeats; heatIndex++) {
@@ -414,6 +457,7 @@ public class HeatLaneDisplayFragment extends Fragment {
                         next *= -1;
                     laneIndex += next;
                 }
+                System.out.println("Inside circle seeder order get 0 (2):" + order.get(0));
             }
             if (numLanes > 3 && (int) numHeats > 1) {
                 int count = 0;
@@ -438,6 +482,7 @@ public class HeatLaneDisplayFragment extends Fragment {
                     heatLanes[numLanes / 2][(int) numHeats - 1] = heatLanes[numLanes - 1][(int) numHeats - 2];
                     heatLanes[numLanes - 1][(int) numHeats - 2] = null;
                 }
+                System.out.println("Inside circle seeder order get 0 (3):" + order.get(0));
             }
         } else if (numLanes % 2 == 0) //even lane case
         {
@@ -454,6 +499,7 @@ public class HeatLaneDisplayFragment extends Fragment {
                     laneIndex += next;
                 }
             }
+            System.out.println("Inside circle seeder order get 0 (4):" + order.get(0));
             if (numLanes > 3 && (int) numHeats > 1) {
                 int count = 0;
                 for (int i = 0; i < numLanes; i++) {
@@ -478,7 +524,9 @@ public class HeatLaneDisplayFragment extends Fragment {
                     heatLanes[numLanes - 1][(int) numHeats - 2] = null;
                 }
             }
+            System.out.println("Inside circle seeder order get 0 (5):" + order.get(0));
         }
+
         return heatLanes;
     }
 
