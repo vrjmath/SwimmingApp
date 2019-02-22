@@ -661,7 +661,7 @@ public class HeatLaneDisplayFragment extends Fragment {
             String currentDateandTime = sdf.format(new Date());
 
 
-            eventPath = user.getUid() + "//"  + event + "//" + currentDateandTime + ".pdf";
+            eventPath = user.getUid() + "//"  + event +  ".pdf"; /*"//" + currentDateandTime +*/
 
             final StorageReference riversRef = storageReference.child(eventPath);
             //final StorageReference riversRef = storageReference.child(user.getUid()).child("testing/test1.pdf");
