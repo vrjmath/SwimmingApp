@@ -50,7 +50,7 @@
     </string-array>
 
     <string-array name="type_array">
-        <item>Regular</item>
+      <!--  <item>Regular</item> -->
         <item>Meet</item>
     </string-array>
 
