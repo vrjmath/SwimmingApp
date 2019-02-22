@@ -656,13 +656,7 @@ public class HeatLaneDisplayFragment extends Fragment {
 
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             FirebaseUser user = mAuth.getCurrentUser();
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-            String currentDateandTime = sdf.format(new Date());
-
-
-            eventPath = user.getUid() + "//"  + event +  ".pdf"; /*"//" + currentDateandTime +*/
-
+            eventPath = user.getUid() + "//" + event + ".pdf";
             final StorageReference riversRef = storageReference.child(eventPath);
             //final StorageReference riversRef = storageReference.child(user.getUid()).child("testing/test1.pdf");
             System.out.println("First storage reference:" + riversRef);
