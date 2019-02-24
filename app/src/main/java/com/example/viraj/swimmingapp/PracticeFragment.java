@@ -73,7 +73,7 @@ public class PracticeFragment extends Fragment{
         pool = "Short Course Yards";
         lanes = "1";
         order = "Heats";
-        type = "Regular";
+        type = "Meet";
 
 
      /*   NumberPicker n = (NumberPicker)view.findViewById(R.id.pickerDistance);
