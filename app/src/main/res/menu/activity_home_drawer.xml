@@ -40,14 +40,15 @@
     <item android:title="Other">
         <menu>
             <item
+                android:id="@+id/request"
+                android:title="Make Request" />
+            <item
                 android:id="@+id/privacy_policy"
                 android:title="Privacy Policy" />
             <item
                 android:id="@+id/about_us"
                 android:title="About Us" />
-            <item
-                android:id="@+id/request"
-                android:title="Make Request" />
+
         </menu>
     </item>
 
