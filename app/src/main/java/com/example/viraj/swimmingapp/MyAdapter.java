@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import static com.example.viraj.swimmingapp.TabFragment.int_items;
-
 
 public class MyAdapter  extends FragmentPagerAdapter {
 

@@ -2,17 +2,14 @@ package com.example.viraj.swimmingapp;
 
 import android.app.Activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ChronometerActivity extends Activity {
 

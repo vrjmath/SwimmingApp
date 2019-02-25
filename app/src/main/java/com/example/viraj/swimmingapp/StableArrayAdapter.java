@@ -19,7 +19,6 @@ package com.example.viraj.swimmingapp;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

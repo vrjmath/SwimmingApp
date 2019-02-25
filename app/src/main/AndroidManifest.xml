@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name="com.example.viraj.swimmingapp.LoginActivity"
             android:label="SwimShark"
             android:windowSoftInputMode="stateHidden">
 
@@ -34,20 +34,20 @@
             -->
         </activity>
         <activity
-            android:name=".HomeActivity"
+            android:name="com.example.viraj.swimmingapp.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DialogActivity" />
-        <activity android:name=".ChronometerActivity" />
-        <activity android:name=".SaveActivity" />
-        <activity android:name=".FirstActivity">
+        <activity android:name="com.example.viraj.swimmingapp.DialogActivity" />
+        <activity android:name="com.example.viraj.swimmingapp.ChronometerActivity" />
+        <activity android:name="com.example.viraj.swimmingapp.SaveActivity" />
+        <activity android:name="com.example.viraj.swimmingapp.FirstActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".SwimmerInformation"></activity>
+        <activity android:name="com.example.viraj.swimmingapp.RegisterActivity" />
+        <activity android:name="com.example.viraj.swimmingapp.SwimmerInformation"></activity>
     </application>
 
 </manifest>

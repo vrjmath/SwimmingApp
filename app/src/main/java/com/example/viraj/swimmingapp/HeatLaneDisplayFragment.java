@@ -172,14 +172,13 @@ public class HeatLaneDisplayFragment extends Fragment {
 
                 String[][] hL;
 
-              //  System.out.println("Circle seeder method has been called");
-               // System.out.println("heat is:" + hL[0][0]);
+                //  System.out.println("Circle seeder method has been called");
+                // System.out.println("heat is:" + hL[0][0]);
                 //printHeatLanes(hL);
 
 
                 for(int x = 0; x < order.size(); x ++)
                     swimmers.add(order.get(x));
-
                 hL = circleSeeder(swimmers, numLanes);
              /*   if(type.equals("Meet")) {
                 }
@@ -199,17 +198,99 @@ public class HeatLaneDisplayFragment extends Fragment {
                 }
                 System.out.println("Lenght is:" + regArr.length);*/
 
-
-                pdfText += "\n" + new Date().toString() + "\n\n          ";
-                if (numLanes >= hL[0].length) {
+                //checkpoint 94 woot looks good
+                String date = new Date().toString();
+                date = date.substring(0,date.indexOf(" ",10)) + " " + date.substring(date.lastIndexOf(" ")+1);
+                pdfText += "\n" + date + "\n\n";
+                pdfText += type + "-seeding by best " + event.substring(1,event.length()-1).toLowerCase() + "\n\n          ";
+                if (numLanes >= hL[0].length) //if there are more lanes than heats
+                {
+                    int space = 60 / hL[0].length; //space allocated horizontally, per column
+                    for (int lane = 0; lane <= numLanes; lane++)
+                    {
+                        if (lane != 0)
+                            pdfText += (String.format("Lane %-2s: ", lane));
+                        for (int heat = 1; heat <= hL[0].length; heat++)
+                        {//System.out.print("heat and lane stuff" + (heat-1) + " " + (lane-1));
+                            if(lane == 0)
+                            {
+                                String temp = "Heat " + heat + ":";
+                                while (temp.length() > space) {
+                                    temp = temp.substring(0, temp.indexOf(" ") - 1) + temp.substring(temp.indexOf(" ") + 1);
+                                }
+                                while (temp.length() < space)
+                                {
+                                    temp += " ";
+                                }
+                                pdfText += temp;
+                            }
+                            else if (hL[lane - 1][heat - 1] != null)
+                            {
+                                if (hL[lane - 1][heat - 1].substring(0, hL[lane - 1][heat - 1].indexOf(" ") + 2).length() >= space-1)
+                                    pdfText += hL[lane - 1][heat - 1].substring(0, space - 4) + " " + hL[lane - 1][heat - 1].substring(hL[lane - 1][heat - 1].indexOf(" ") + 1, hL[lane - 1][heat - 1].indexOf(" ") + 2) + ". ";
+                                else
+                                {
+                                    String temp = hL[lane - 1][heat - 1].substring(0, hL[lane - 1][heat - 1].indexOf(" ") + 2) + ".";
+                                    while(temp.length()<space)
+                                        temp += " ";
+                                    pdfText += temp;
+                                }
+                            }
+                        }
+                        pdfText += "\n\n";
+                    }
+                } else
+                {
+                    hL = transposeMatrix(hL);
+                    int space = 60 / hL[0].length; //space allocated horizontally, per column
+                    for (int heat = 0; heat <= hL.length; heat++)
+                    {
+                        if (heat != 0)
+                        {
+                            pdfText += String.format("Heat %-2s:\t", heat);
+                        }
+                        for (int lane = 1; lane <= numLanes; lane++) {
+                            if (heat == 0)
+                            {
+                                String temp = "Lane " + lane + ":";
+                                while (temp.length() > space) {
+                                    temp = temp.substring(0, temp.indexOf(" ") - 1) + temp.substring(temp.indexOf(" ") + 1);
+                                }
+                                while (temp.length() < space)
+                                {
+                                    temp += " ";
+                                }
+                                pdfText += temp;
+                            }
+                            else if (hL[heat - 1][lane - 1] != null)
+                            {
+                                if (hL[heat - 1][lane - 1].substring(0, hL[heat - 1][lane - 1].indexOf(" ") + 2).length() >= space-1)
+                                    pdfText += hL[heat - 1][lane - 1].substring(0, space - 4) + " " + hL[heat - 1][lane - 1].substring(hL[heat - 1][lane - 1].indexOf(" ") + 1, hL[heat - 1][lane - 1].indexOf(" ") + 2) + ". ";
+                                else
+                                {
+                                    String temp = hL[heat - 1][lane - 1].substring(0, hL[heat - 1][lane - 1].indexOf(" ") + 2) + ".";
+                                    while(temp.length()<space)
+                                        temp += " ";
+                                    pdfText += temp;
+                                }
+                            }
+                        }
+                        pdfText += "\n\n";
+                    }
+                }
+                /*if (numLanes >= hL[0].length) {
                     for (int lane = 0; lane <= numLanes; lane++) {
                         if (lane != 0)
                             pdfText += String.format("Lane %-2s:\t", lane);
                         for (int heat = 1; heat <= hL[0].length; heat++) {
                             if (lane == 0)
                                 pdfText += String.format("%-12s", "Heat " + heat + ":    ");
-                            else if (hL[lane - 1][heat - 1] != null)
-                                pdfText += String.format("%-12s", hL[lane - 1][heat - 1].substring(0, hL[lane - 1][heat - 1].indexOf(" ") + 2) + ".");
+                            else if (hL[lane - 1][heat - 1] != null) {
+                                if (hL[heat - 1][lane - 1].substring(0, hL[heat - 1][lane - 1].indexOf(" ") + 2).length() >= 60.0 / hL[0].length)
+                                    pdfText += hL[heat - 1][lane - 1].substring(0, 60 / hL[0].length - 4) + " " + hL[heat - 1][lane - 1].substring(hL[heat - 1][lane - 1].indexOf(" ") + 1, hL[heat - 1][lane - 1].indexOf(" ") + 2) + ". ";
+                                else
+                                    pdfText += String.format("%-12s", hL[heat - 1][lane - 1].substring(0, hL[heat - 1][lane - 1].indexOf(" ") + 2) + ".");
+                            }
                         }
                         pdfText += "\n";
                     }
@@ -218,19 +299,21 @@ public class HeatLaneDisplayFragment extends Fragment {
                     for (int heat = 0; heat <= hL.length; heat++) {
                         if (heat != 0)
                             pdfText += String.format("Heat %-2s:\t", heat);
-                        for (int lane = 1; lane <= hL[0].length; lane++) {
+                        for (int lane = 1; lane <= numLanes; lane++) {
                             if (heat == 0)
                                 pdfText += String.format("%-12s", "Lane " + lane + ":    ");
                             else if (hL[heat - 1][lane - 1] != null) {
                                 if (hL[heat - 1][lane - 1].substring(0, hL[heat - 1][lane - 1].indexOf(" ") + 2).length() >= 60.0 / hL[0].length)
-                                    pdfText += hL[heat - 1][lane - 1].substring(0, 60 / hL[0].length);
+                                    pdfText += hL[heat - 1][lane - 1].substring(0, 60 / hL[0].length-4) + " " + hL[heat-1][lane-1].substring(hL[heat - 1][lane - 1].indexOf(" ")+1,hL[heat - 1][lane - 1].indexOf(" ")+2) + ". ";
                                 else
                                     pdfText += String.format("%-12s", hL[heat - 1][lane - 1].substring(0, hL[heat - 1][lane - 1].indexOf(" ") + 2) + ".");
                             }
+                            else if(hL[heat-1][lane-1] == null)
+                                    pdfText += String.format("%12s","");
                         }
                         pdfText += "\n";
                     }
-                }
+                }*/
                 createandDisplayPdf(pdfText);
             }
         });
@@ -256,7 +339,7 @@ public class HeatLaneDisplayFragment extends Fragment {
     public HashMap<String, List<String>> getData() {
         HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
         inputBundle = getArguments();
-       // System.out.println("Input:" + inputBundle.getString("Lanes"));
+        // System.out.println("Input:" + inputBundle.getString("Lanes"));
         numLanes = Integer.parseInt(inputBundle.getString("Lanes"));
         order = inputBundle.getStringArrayList("Order");
         orderPool = inputBundle.getString("OrderPool");
