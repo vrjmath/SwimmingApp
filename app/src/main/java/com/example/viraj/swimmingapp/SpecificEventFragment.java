@@ -29,7 +29,7 @@ import java.util.List;
 
 public class SpecificEventFragment extends Fragment {
     private ArrayList<String> data = new ArrayList<String>();
-    ArrayAdapter<String> adapter;
+    ArrayAdapter<String> adapter1;
     //MyListAdaper<Context, int, List<String>> adapter;
     ListView lv;
     DatabaseReference dF;
@@ -37,6 +37,8 @@ public class SpecificEventFragment extends Fragment {
     EditText heat;
     EditText lane;
     Button timerButton;
+    int [] points = {20, 17, 16, 15, 14, 13, 12, 11, 9, 7, 6, 5, 4, 3, 2, 1};
+    int [] teamPoints = {0, 0, 0, 0, 0, 0, 0};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,9 +52,11 @@ public class SpecificEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lv = (ListView) view.findViewById(R.id.listview);
+
         //lv.setAdapter(new MyListAdaper(getActivity(), R.layout.list_item_swimmer, data));
-        adapter = new MyListAdapter(this.getActivity(), R.layout.list_item_swimmer, data);
-        lv.setAdapter(adapter);
+        //adapter = new MyListAdapter(this.getActivity(), R.layout.list_item_swimmer, data);
+        adapter1 = new ArrayAdapter<String>(this.getActivity(), R.layout.list_item, R.id.list_item_text, data);
+        lv.setAdapter(adapter1);
 
         //View inflatedView = getLayoutInflater().inflate(R.layout.list_item_swimmer, null);
 
@@ -97,13 +101,68 @@ public class SpecificEventFragment extends Fragment {
         dF.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                String names = "";
+                String teams = "";
                 //HashMap<String, Object> dataMap = new HashMap<String, Object>();
+                boolean namesDone = false;
                 for(DataSnapshot swimmer: dataSnapshot.getChildren()){
-                    //if(swimmer.getKey())
-                    data.add(swimmer.getKey() + " " + swimmer.getValue().toString());
+                    if(namesDone == false) {
+                        names = swimmer.getValue().toString();
+                        namesDone = true;
+                    }
+                    if(namesDone = true)
+                        teams = swimmer.getValue().toString();
+
+                   // data.add(swimmer.getKey() + " " + swimmer.getValue().toString());
+                }
+                data.add(bundle.getString("reference"));
+                data.add("Totals");
+                for(int x = 0; x < 16; x ++) {
+                    if(x!=15) {
+                        int place = 0;
+                        place = x +1;
+                        String teamName = teams.substring(0, teams.indexOf(' '));
+                        data.add(place + ": " + names.substring(0, names.indexOf(' ')) + " " + teamName);
+                        System.out.println("Team is:" + teamName + ":" + points[x]);
+                        if(teamName.equals("GUNN"))
+                            teamPoints[0] += points[x];
+                        else if(teamName.equals("HHS"))
+                            teamPoints[1] += points[x];
+                        else if(teamName.equals("LAHS"))
+                            teamPoints[2] += points[x];
+                        else if(teamName.equals("LOGA"))
+                            teamPoints[3] += points[x];
+                        else if(teamName.equals("PALY"))
+                            teamPoints[4] += points[x];
+                        else if(teamName.equals("MTVI"))
+                            teamPoints[5] += points[x];
+                        else if(teamName.equals("SART"))
+                            teamPoints[6] += points[x];
+                        names = names.substring(names.indexOf(' ') + 1);
+                        teams = teams.substring(teams.indexOf(' ') + 1);
+                    }
+                    if(x == 15) {
+                        String teamName = teams;
+                        data.add("16: " + names + " " + teams);
+                        if (teamName.equals("GUNN"))
+                            teamPoints[0] += points[x];
+                        else if (teamName.equals("HHS"))
+                            teamPoints[1] += points[x];
+                        else if (teamName.equals("LAHS"))
+                            teamPoints[2] += points[x];
+                        else if (teamName.equals("LOGA"))
+                            teamPoints[3] += points[x];
+                        else if (teamName.equals("PALY"))
+                            teamPoints[4] += points[x];
+                        else if (teamName.equals("MTVI"))
+                            teamPoints[5] += points[x];
+                        else if (teamName.equals("SART"))
+                            teamPoints[6] += points[x];
+                    }
                 }
                 //Collections.sort(data);
-                adapter.notifyDataSetChanged();
+
+                adapter1.notifyDataSetChanged();
                 //lv.getAdapter()
             }
             @Override
@@ -114,6 +173,18 @@ public class SpecificEventFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 1){
+                    PointsDisplayFragment pdf = new PointsDisplayFragment();
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putIntArray("Team Points", teamPoints);
+                    bundle1.putString("Event", bundle.getString("reference"));
+                    pdf.setArguments(bundle1);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.screen_area, pdf)
+                            .commit();
+
+                }
                 //Toast.makeText(getActivity(), "List item was clicked at " + position, Toast.LENGTH_SHORT).show();
             }
         });
@@ -164,8 +235,8 @@ public class SpecificEventFragment extends Fragment {
             notifyDataSetChanged();
         }
 
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
+
+        /*public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder mainViewholder = null;
             //System.out.println("entered view");
             if(convertView == null) {
@@ -199,7 +270,7 @@ public class SpecificEventFragment extends Fragment {
             mainViewholder.title.setText(getItem(position));
 
             return convertView;
-        }
+        }*/
 
     }
 

@@ -17,15 +17,20 @@
             android:id="@+id/nav_practice"
             android:icon="@drawable/ic_pool"
             android:title="Lane Maker" />
-        <item
-            android:id="@+id/nav_settings"
-            android:visible="false"
+        <!--<item
+            android:id="@+id/nav_set"
+            android:visible="true"
             android:icon="@drawable/ic_pool"
-            android:title="Practice (RFID)" />
+            android:title="Set" /> -->
         <item
             android:id="@+id/nav_attendance"
             android:icon="@drawable/ic_people"
             android:title="Attendance" />
+        <item
+            android:id="@+id/nav_results"
+            android:visible="true"
+            android:icon="@drawable/ic_pool"
+            android:title="Results" />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_email"

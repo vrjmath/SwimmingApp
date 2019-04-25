@@ -48,6 +48,7 @@ public class SetFragment extends Fragment implements Runnable {
      * If the class is running or not
      */
     boolean mIsRunning;
+    String event;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,8 +57,39 @@ public class SetFragment extends Fragment implements Runnable {
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        inputBundle = getArguments();
+        //inputBundle = getArguments();
         //attendance = inputBundle.getStringArrayList("attendance");
+
+        inputBundle = getArguments();
+        event = inputBundle.getString("Stroke");
+        String temp = inputBundle.getString("Distance");
+        String pool = inputBundle.getString("Pool");
+
+        String poolAcr = "";
+
+        if (event.equals("Freestyle")) {
+            event = "Free";
+        } else if (event.equals("Backstroke")) {
+            event = "Back";
+        } else if (event.equals("Breastroke")) {
+            event = "Breast";
+        } else if (event.equals("Butterfly")) {
+            event = "Fly";
+        } else if (event.equals("IM")) {
+            event = "IM";
+        } else if (event.equals("Best Stroke"))
+            event = "Best Stroke";
+        if (pool.equals("Short Course Yards")) {
+            poolAcr = "Yd";
+        } else if (pool.equals("Long Course Meters")) {
+            poolAcr = "M";
+        }
+        /*if(event.equals("Best Stroke")){
+            event = temp + " " + poolAcr + " " + event;
+        }
+        else{*/
+        event = "\"" + temp + " " + poolAcr + " " + event + "\"";
+        //"\"100 M Free\""
         FirebaseAuth mAuth1 = FirebaseAuth.getInstance();
         FirebaseUser user1 = mAuth1.getCurrentUser();
 
@@ -105,7 +137,8 @@ public class SetFragment extends Fragment implements Runnable {
                     Bundle bundle = new Bundle();
                     bundle.putStringArrayList("splits", splits);
                     //bundle.putStringArrayList("attendance", attendance);
-                    bundle.putString("SetName", inputBundle.getString("SetName"));
+                    //bundle.putString("SetName", inputBundle.getString("SetName"));
+                    bundle.putString("SetName", event);
                     tsp.setArguments(bundle);
                     getFragmentManager()
                             .beginTransaction()

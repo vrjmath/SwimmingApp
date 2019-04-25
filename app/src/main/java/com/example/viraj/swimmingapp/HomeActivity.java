@@ -123,10 +123,10 @@ public class HomeActivity extends AppCompatActivity
                     .replace(R.id.screen_area, new AttendanceFragment())
                     .commit();
 
-        } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_results) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.screen_area, new SettingsFragment())
+                    .replace(R.id.screen_area, new MeetFragment())
                     .commit();
 
         } else if (id == R.id.nav_share) {

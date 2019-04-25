@@ -82,20 +82,33 @@ public class TimeSwimmerPairFragment extends Fragment {
         //adapter.notifyDataSetChanged();
         splits = bundle.getStringArrayList("splits");
         time.setText(splits.get(x));
-        if(setName.contains("50")) {
+        //if(setName.contains("50")) {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             FirebaseUser user = mAuth.getCurrentUser();
-            df2 = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("50 Freestyle");
+            df2 = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child(setName);
             df2.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    String temp = dataSnapshot.getValue(String.class);
+                    ArrayList<String> allNames = new ArrayList<>();
+                    for (DataSnapshot swimmer : dataSnapshot.getChildren()) {
+                        String val = swimmer.getValue().toString();
+                        String last = val.substring(val.indexOf(' ') + 1);
+                        String first = val.substring(0, val.indexOf(' '));
+                        char lastC = last.charAt(0);
+                        last = Character.toUpperCase(lastC) + last.substring(1);
+                        char firstC = first.charAt(0);
+                        first = Character.toUpperCase(firstC) + first.substring(1);
+                        val = last + ", " + first;
+
+                        allNames.add(val);
+                        // System.out.println("VALUEEE:" + val);
+                    }
+                    /*String temp = dataSnapshot.getValue(String.class);
                     int b = 0;
                     for(int x = 0; x < temp.length(); x ++){
                         if(temp.charAt(x) == ',')
                             b++;
                     }
-                    ArrayList<String> allNames = new ArrayList<>();
                     for(int a = 0; a <=b-1; a++) {
                         String theSub = temp.substring(0, temp.indexOf(","));
                         System.out.println("SUB:" + theSub);
@@ -104,7 +117,7 @@ public class TimeSwimmerPairFragment extends Fragment {
                         if (a < b - 1) {
                             temp = temp.substring(temp.indexOf(",") + 2);
                         }
-                    }
+                    }*/
                     for(int p = 0; p <allNames.size(); p++){
                         for(int u = 0; u < names.size(); u++){
                             if(names.get(u).contains(allNames.get(p))) {
@@ -134,8 +147,8 @@ public class TimeSwimmerPairFragment extends Fragment {
 
                 }
             });
-        }
-        else if(setName.contains("100")) {
+        //}
+        /*else if(setName.contains("100")) {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             FirebaseUser user = mAuth.getCurrentUser();
             df2 = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("100 Freestyle");
@@ -177,7 +190,7 @@ public class TimeSwimmerPairFragment extends Fragment {
                         if(names.get(u).contains(theSub))
                             sortedNames.add(theSub);
                         }
-                    }*/
+                    }
                     //do what you want with the email
                     //return;
                 }
@@ -187,7 +200,7 @@ public class TimeSwimmerPairFragment extends Fragment {
 
                 }
             });
-        }
+        }*/
         System.out.println("DOESITMAKEITHERE");
 
        /* for(int m = 0; m < sortedNames.size(); m ++){

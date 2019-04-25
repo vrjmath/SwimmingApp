@@ -36,6 +36,8 @@ public class SpecificMeetFragment extends Fragment {
     Bundle bundle1;
     DatabaseReference dF1;
     DatabaseReference dF2;
+    int [] points = {20, 17, 16, 15, 14, 13, 12, 11, 9, 7, 6, 5, 4, 3, 2, 1};
+    int [] teamPoints = {0, 0, 0, 0, 0, 0, 0};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,17 +65,31 @@ public class SpecificMeetFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SpecificEventFragment sef = new SpecificEventFragment();
-                data.get(position);
-                Bundle bundle = new Bundle();
-                bundle.putString("reference", data.get(position));
-                bundle.putInt("type", 1);
-                bundle.putString("meetReference", bundle1.getString("Reference"));
-                sef.setArguments(bundle);
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.screen_area, sef)
-                        .commit();
+                System.out.println("position is:" + position);
+                if(position == 8 ){
+                    PointsDisplayFragment pdf = new PointsDisplayFragment();
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putIntArray("Team Points", teamPoints);
+                    bundle1.putString("Event", "Varsity Boys Totals");
+                    pdf.setArguments(bundle1);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.screen_area, pdf)
+                            .commit();
+                }
+                else {
+                    SpecificEventFragment sef = new SpecificEventFragment();
+                    data.get(position);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("reference", data.get(position));
+                    bundle.putInt("type", 1);
+                    bundle.putString("meetReference", bundle1.getString("Reference"));
+                    sef.setArguments(bundle);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.screen_area, sef)
+                            .commit();
+                }
             }
         });
 
@@ -81,17 +97,61 @@ public class SpecificMeetFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 HashMap<String, Object> dataMap = new HashMap<String, Object>();
+
                 for (DataSnapshot event : dataSnapshot.getChildren()) {
                     data.add(event.getKey());
+                    if(event.getKey().contains("Varsity")) {
+                        String teams = event.child("Teams").getValue() + "";
+                        for (int x = 0; x < 16; x++) {
+                            if (x != 15) {
+                                String teamName = teams.substring(0, teams.indexOf(' '));
+                                if (teamName.equals("GUNN"))
+                                    teamPoints[0] += points[x];
+                                else if (teamName.equals("HHS"))
+                                    teamPoints[1] += points[x];
+                                else if (teamName.equals("LAHS"))
+                                    teamPoints[2] += points[x];
+                                else if (teamName.equals("LOGA"))
+                                    teamPoints[3] += points[x];
+                                else if (teamName.equals("PALY"))
+                                    teamPoints[4] += points[x];
+                                else if (teamName.equals("MTVI"))
+                                    teamPoints[5] += points[x];
+                                else if (teamName.equals("SART"))
+                                    teamPoints[6] += points[x];
+                                teams = teams.substring(teams.indexOf(' ') + 1);
+                            }
+                            if (x == 15) {
+                                String teamName = teams;
+                                if (teamName.equals("GUNN"))
+                                    teamPoints[0] += points[x];
+                                else if (teamName.equals("HHS"))
+                                    teamPoints[1] += points[x];
+                                else if (teamName.equals("LAHS"))
+                                    teamPoints[2] += points[x];
+                                else if (teamName.equals("LOGA"))
+                                    teamPoints[3] += points[x];
+                                else if (teamName.equals("PALY"))
+                                    teamPoints[4] += points[x];
+                                else if (teamName.equals("MTVI"))
+                                    teamPoints[5] += points[x];
+                                else if (teamName.equals("SART"))
+                                    teamPoints[6] += points[x];
+                            }
+                        }
+                    }
+
                 }
+                data.add("Varsity Boys Totals");
+
                 //System.out.println(data.get(0));
                 System.out.println("here:" + data.get(0));
                 ArrayList<String> temp = new ArrayList<String>();
                 for(int a = 0; a < 100; a ++){
                     for(int b = 0; b < data.size(); b ++) {
-                        System.out.println("it comes here");
-                        System.out.println("Data is:" +data.get(b));
-                        System.out.println("String:" + data.get(b).substring(0, data.get(b).indexOf(" ")));
+                        //System.out.println("it comes here");
+                        //System.out.println("Data is:" +data.get(b));
+                        //System.out.println("String:" + data.get(b).substring(0, data.get(b).indexOf(" ")));
                         if(data.get(b).substring(0, data.get(b).indexOf(" ")).equals( a + ""))
                             temp.add(data.get(b));
                     }

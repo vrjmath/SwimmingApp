@@ -56,18 +56,18 @@ public class MeetFragment extends Fragment {
 
 
                 SpecificMeetFragment smf = new SpecificMeetFragment();
-                data.get(position);
-                Bundle bundle = new Bundle();
-                System.out.println("Position is" + data.get(position));
-                bundle.putString("Reference", data.get(position));
-                System.out.println("INSIDE MEET" + bundle.getString("Reference"));
-                //bundle.putInt("type", 1);
-                smf.setArguments(bundle);
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.screen_area, smf)
-                        .commit();
-
+                if(data.get(position).equals("2019 SCVAL Championships")) {
+                    Bundle bundle = new Bundle();
+                    //System.out.println("Position is" + data.get(position));
+                    bundle.putString("Reference", "2018 SCVAL Championships");
+                    System.out.println("INSIDE MEET" + bundle.getString("Reference"));
+                    //bundle.putInt("type", 1);
+                    smf.setArguments(bundle);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.screen_area, smf)
+                            .commit();
+                }
             }
         });
 
@@ -77,6 +77,9 @@ public class MeetFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //HashMap<String, Object> dataMap = new HashMap<String, Object>();
                 for(DataSnapshot meet: dataSnapshot.getChildren()){
+                    if(meet.getKey().equals("2018 SCVAL Championships"))
+                        data.add("2019 SCVAL Championships");
+                    else
                     data.add(meet.getKey());
                 }
                 //Collections.sort(data);
